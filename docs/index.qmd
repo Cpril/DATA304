@@ -1,7 +1,10 @@
 ---
-title: "My Quarto Document"
+title: "Data 304 Portfolio"
+author: Priscilla Chen
 format:
   html:
     embed-resources: true
 ---
-### hello
+## Homework 5
+### Exercise 1
+### Exercise 2
