@@ -5,6 +5,13 @@ format:
   html:
     embed-resources: true
 ---
+
+-----------------------------------
 ## Homework 5
+
 ### Exercise 1
+
+![Graphic](/rprojects/jc253/DATA304/Pictures/Federal_work.png)
+
+
 ### Exercise 2
