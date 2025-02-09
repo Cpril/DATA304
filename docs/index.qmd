@@ -187,9 +187,9 @@ df = pd.read_csv("https://calvin-data304.netlify.app/data/weather-with-dates.csv
 df['month_name'] = pd.to_datetime(df['date']).dt.month_name()
 # make the chart
 alt.Chart(df,width = 200, height = 150).mark_bar().encode(
-    x = 'month_name:N',
+    x = alt.X('month_name:N',title = "Month"),
     y = 'count()',
-    color = alt.Color("weather:N", title="Weather Type")).facet('weather:N', columns=3, title="Weather")
+    color = alt.Color("weather:N", title="Weather Type")).facet('weather:N', columns=3)
 ```
 
 
