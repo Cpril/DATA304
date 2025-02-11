@@ -1,5 +1,5 @@
 ---
-title: "Data 304 Portfolio"
+title: "Homework 5"
 author: Priscilla Chen
 format:
   html:
@@ -9,9 +9,6 @@ format:
 -----------------------------------
 
 ## Homework 5
-
-[Homework 5](/rprojects/jc253/DATA304/html_sources/HW5.html)
-
 
 ### Exercise 1
 
