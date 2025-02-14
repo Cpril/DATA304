@@ -10,8 +10,8 @@ embed-resources: true
 ## Homework 5
 
 ### Exercise 1
-![Graphic](/rprojects/jc253/DATA304/Pictures/Federal_work.png)
 
+![Graphic](/rprojects/jc253/DATA304/Pictures/Federal_work.png)
 
 **What marks are being used? What variables are mapped to which properties?**
 
@@ -23,12 +23,11 @@ Y (pink graphic): Total federal employment;
 
 Y (blue graphic): Percent of all US jobs
 
-
 **What is the main story of this graphic?**
 
-Both the total number of federal employees and federal employment as a percent of all US jobs sharply increased and decreased in 1940s, peaked at November of 1944 at 3.14 Million total federal employments and consisted of 7.45% of all US jobs. 
+Both the total number of federal employees and federal employment as a percent of all US jobs sharply increased and decreased in 1940s, peaked at November of 1944 at 3.14 Million total federal employments and consisted of 7.45% of all US jobs.
 
-Since 1950s, the total number of federal employees has slighly increased until 1990s, and remained relatively stable since 1990s, with some fluctuations. 
+Since 1950s, the total number of federal employees has slighly increased until 1990s, and remained relatively stable since 1990s, with some fluctuations.
 
 Despite this stability and slight increase of total number of federal employees, federal employment as a percent of all US jobs has steadily declined from 1950s to 2024 with small fluctuations.
 
@@ -40,8 +39,7 @@ The colors are distinct to each other and consistant for each graphic
 
 **What features do you think you would know how to implement in Vega-Lite?**
 
-I know how to do: Titles, line graphs, points, texts, color on the graphics. 
-I can figure out how to have two graphics with the same x axis but different y axis with concatanation or repeat.
+I know how to do: Titles, line graphs, points, texts, color on the graphics. I can figure out how to have two graphics with the same x axis but different y axis with concatanation or repeat.
 
 **Are there any features of the graphic that you would not know how to do in Vega-Lite? If so, list them.**
 
@@ -51,9 +49,13 @@ I don't know how to add the brand icon (the "USAFACTS" on the bottom left of the
 
 ### Exercise 2
 
-1.
+1.  
 
-a. Create a graphic that shows the high temperature in Seattle each day.
+```{=html}
+<!-- -->
+```
+a.  Create a graphic that shows the high temperature in Seattle each day.
+
 ```{r}
 #| include: false
 library(vegawidget)
@@ -61,6 +63,7 @@ library(reticulate)
 library(vegabrite)
 library(altair)
 ```
+
 ```{r}
 '
 {
@@ -117,7 +120,7 @@ library(altair)
 '|> as_vegaspec()
 ```
 
-b. Now modify this so that the temperatures for the same day of the year are overlaid on top of each other for the several years in the data set.
+b.  Now modify this so that the temperatures for the same day of the year are overlaid on top of each other for the several years in the data set.
 
 ```{r}
 '{
@@ -175,15 +178,14 @@ b. Now modify this so that the temperatures for the same day of the year are ove
   
 }'|> as_vegaspec()
 ```
-3. 
-Create a graphic that shows how the different types of weather (rain, fog, etc.) are distributed by month in Seattle. When is it rainiest in Seattle? Sunniest?
+
+3.  Create a graphic that shows how the different types of weather (rain, fog, etc.) are distributed by month in Seattle. When is it rainiest in Seattle? Sunniest?
 
 ```{python}
 import pandas as pd
 import altair as alt
 from vega_datasets import data
 ```
-
 
 ```{python}
 

@@ -1,13 +1,9 @@
 ---
-title: "Data 304 Portfolio"
-author: Priscilla Chen
-code-fold: true
-format:
-  html:
-    embed-resources: true
+title: "HW_6"
+format: html
+editor: visual
+embed-resources: true
 ---
-
------------------------------------
 
 ## Homework 6
 
@@ -15,24 +11,23 @@ format:
 
 **a.What is the most interesting lesson, guide, or piece of advice Tufte offers you in this chapter?**
 
-On page 37, Tufte wrote: "The problem with time-series is that the simple passage of time is not a good explanatory variable: descriptive chronology is not a causal explanation". 
+On page 37, Tufte wrote: "The problem with time-series is that the simple passage of time is not a good explanatory variable: descriptive chronology is not a causal explanation".
 
-This is interesting because we sometimes link the correlation in the time-series graphic with some external reasons and explainations. In fact, we cannot make such conclusion. Nonetheless, it gives us an idea of the trend and prompt further explore. 
+This is interesting because we sometimes link the correlation in the time-series graphic with some external reasons and explainations. In fact, we cannot make such conclusion. Nonetheless, it gives us an idea of the trend and prompt further explore.
 
 **b.Tufte shares some of his favorite graphics in this chapter. Pick one (but not the one about the military advance on and retreat from Russia) and answer the following.**
 
-- **What page is your graphic on? [Take a screen shot and include the image as well, if you can.]**
-Page 48.
+-   **What page is your graphic on? \[Take a screen shot and include the image as well, if you can.\]** Page 48.
 
 ![Graphic](/rprojects/jc253/DATA304/docs/Pictures/Inflation_and_unemployment.png)
 
-- **Why did you pick the graphic you chose?**
+-   **Why did you pick the graphic you chose?**
 
 This is an interesting trail graph, and I like how it challenges the assumption that unemployment rate and inflation are inversely related.
 
-- **What encoding channels are used in the graphic? What variables are they associated with?**
+-   **What encoding channels are used in the graphic? What variables are they associated with?**
 
-Position (X axis): male unemployment rate. 
+Position (X axis): male unemployment rate.
 
 Position (Y axis): Increase in CPI.
 
@@ -40,41 +35,37 @@ Line (connect points): time.
 
 Text: Guides for year.
 
-- **What, if any, elements of the graphic would be hard/impossible for you to implement in Vega-Lite (given what we know so far)?**
+-   **What, if any, elements of the graphic would be hard/impossible for you to implement in Vega-Lite (given what we know so far)?**
 
-I think everything in this graph would be possible to implement in Vega-Lite. 
+I think everything in this graph would be possible to implement in Vega-Lite.
 
-- **What point is Tufte illustrating with this graphic?**
+-   **What point is Tufte illustrating with this graphic?**
 
-It is an example of relational graphic that links two variables, encouraging and imploring the view to assess the possible causal relationship between the variables. This graphic in particular confronts the commonly held belief that inflation and unemployment rate are inversely related to each other. 
+It is an example of relational graphic that links two variables, encouraging and imploring the view to assess the possible causal relationship between the variables. This graphic in particular confronts the commonly held belief that inflation and unemployment rate are inversely related to each other.
 
 ### Exercise 2
 
 **List one or two ideas that you learned in these sections that will change the way you design and create data graphics.**
 
-- On page 30, Tufte wrote about the power of data graphics should be reserved for the richer, more complex, more difficult statistical material. If the data is simple, it can be better summarized in one or two numbers, then there's no need for data graphics. I changed my understanding in designing graphics. I didn't care about the efficiency before; I divide the data and make multiple graphics and let viewers sort through the graphics. Tufte suggests that data graphics has the power to convey complexity of data with visualization, and thus data graphics exists not only because it visualize the data, but also because it is more efficient than data tables. 
+-   On page 30, Tufte wrote about the power of data graphics should be reserved for the richer, more complex, more difficult statistical material. If the data is simple, it can be better summarized in one or two numbers, then there's no need for data graphics. I changed my understanding in designing graphics. I didn't care about the efficiency before; I divide the data and make multiple graphics and let viewers sort through the graphics. Tufte suggests that data graphics has the power to convey complexity of data with visualization, and thus data graphics exists not only because it visualize the data, but also because it is more efficient than data tables.
 
 ### Exercise 3
 
 **Exercise 2.13 from book:**
 
-Step 1: List three things that are not ideal about this graph.
-- The guide is unclear. We don't know what the response and completion rates means. In addition, the X axis is unclear.
-- Completion rates are bars and response rate are lines. It suggests that completion are treated as a discrete data, while response rate is a continuous variable.
-- The text and the y axis guides are redundent. In addition, the orange texts such as "2.3%" overlap a little with the blue bars and sometimes with the orange lines.  
+Step 1: List three things that are not ideal about this graph. - The guide is unclear. We don't know what the response and completion rates means. In addition, the X axis is unclear. - Completion rates are bars and response rate are lines. It suggests that completion are treated as a discrete data, while response rate is a continuous variable. - The text and the y axis guides are redundent. In addition, the orange texts such as "2.3%" overlap a little with the blue bars and sometimes with the orange lines.
 
-Step 2: For each, describe how you would overcome the given challenges
-- I would change the titles from "Response and Completion Rates" to "Response and Completion Rates of ____ from 2017 to 2019". Add title to X-axis: "Time (measured Quaterly)" 
-- I would change the bars of completion rate into lines. 
-- I would only show the beginning and ending values, leaving the rest for the y axis guide.
+Step 2: For each, describe how you would overcome the given challenges - I would change the titles from "Response and Completion Rates" to "Response and Completion Rates of \_\_\_\_ from 2017 to 2019". Add title to X-axis: "Time (measured Quaterly)" - I would change the bars of completion rate into lines. - I would only show the beginning and ending values, leaving the rest for the y axis guide.
 
-Step 3: 
+Step 3:
 
 **a. Graphic:**
+
 ```{r}
 #| include: false
 library(reticulate)
 ```
+
 ```{python}
 import pandas as pd
 import altair as alt
@@ -153,12 +144,4 @@ Total_chart
 
 ```
 
-
-**b. Identify some ways in which your design was affected by the things you read or the examples you saw in this assignment.**
-Tufte talked about how time-series graphics are great for richer, more complex, more difficult data. He stressed on the efficiency of data graphics. Therefore, I chose to layer the graphics together, instead of concatenation, so that more data can be visualized efficiently in a smaller space. In addition, some graphics Tufte showed have two y axis, one on each side (example: page 15). It shows that it's okay to have two different y axis as long as they are accurately presented.
-
-
------------------------------------------------------------------------------------
-[Homework 6](docs/HW_6.html)
-
-[Homework 5](docs/HW_5.html)
+**b. Identify some ways in which your design was affected by the things you read or the examples you saw in this assignment.** Tufte talked about how time-series graphics are great for richer, more complex, more difficult data. He stressed on the efficiency of data graphics. Therefore, I chose to layer the graphics together, instead of concatenation, so that more data can be visualized efficiently in a smaller space. In addition, some graphics Tufte showed have two y axis, one on each side (example: page 15). It shows that it's okay to have two different y axis as long as they are accurately presented.
