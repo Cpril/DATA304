@@ -9,6 +9,222 @@ format:
 
 -----------------------------------
 
+## **HW 7**
+
+**Exercise 1 (Wilke on visualizing amounts)** Read Chapter 6 of Wilke ([2019](https://calvin-data304.netlify.app/hw/hw07-perception-and.html#ref-Wilke:2019)).
+
+This chapter begins by discussing bar charts. Many of you gravitate toward bar plots. Beware the tendency to overuse them! But if you are going to use them, you should use them well.
+
+a.  List some guidelines/advice Wilke gives about creating bar charts.
+
+    -   Rotating labels can result in ugly axis guide, a better solution is to swap x and y axis so that the bars run horizontally.
+
+    -   We need to pay attention to the order in which the bars are arranged.
+
+    -   A group bars figure is only primarily interested in specific differences in a particular group. It's not good if we care more about the overall pattern.
+
+    -   Stacking is useful when the sum of the amounts represented by the individual stacked bars is in itself a meaningful amount.
+
+b.  When is it not advised to use a bar chart? Why?
+
+    -   When the value does not start at zero. Because the limitation of bars is that they need to start at zero, so that the bar length is proportional to the amount shown.
+
+c.  What alternatives to bars are mentioned in this chapter?
+
+    -   dots, colors.
+
+d.  What guidance does Wilke give about whether or not to stack bars vs. dodge them (using an offset in Vega-Lite)?
+
+    -   Stacked bars are useful when the sum of the amounts represented by the individual stacked bars is in itself a meaningful amount. Stacking is also appropriate when the individual bars represent counts.
+
+    -   Dodge bars are useful when we need to show a lot of information at once. It's good if we are primarily interested in the differences in the levels of one variable among a particular group.
+
+e.  Recreate Figure 6.3 in Vega-Lite. [\[CSV\]](https://calvin-data304.netlify.app/data/cow-movies.csv)
+
+```{r}
+#| include: true
+library(reticulate)
+```
+```{python}
+#| include: false
+import pandas as pd
+import altair as alt
+```
+```{python}
+df = pd.read_csv("https://calvin-data304.netlify.app/data/cow-movies.csv")
+df["amount_millions"] = df["amount"] / 1_000_000
+chart_6_3 = alt.Chart(df, width=400, height=300).mark_bar().encode(
+  y =alt.Y("title_short:N", title = "", sort = "-x"), 
+  x= alt.X("amount_millions:Q", 
+  sort = 'ascending', 
+  title = "weekend gross (million USD)",
+  scale=alt.Scale(domain=[0, 80]), 
+        axis=alt.Axis(values=[0, 20, 40, 60, 80])
+        ) 
+        )
+  
+chart_6_3
+```
+    
+
+f.  Recreate Figures 6.8 and 6.9 in Vega-Lite. [\[CSV\]](https://calvin-data304.netlify.app/data/cow-income.csv)
+```{python}
+df_8 = pd.read_csv('https://calvin-data304.netlify.app/data/cow-income.csv')
+include_race = ["asian", "white", "hispanic", "black"]
+df_8_filtered = df_8[df_8["race"].isin(include_race)]
+
+Chart_6_8 = alt.Chart(df_8_filtered,width = 400, height = 300).mark_bar().encode(
+    x=alt.X("race:N", title="", axis=alt.Axis(labelAngle=0), sort = include_race),
+    xOffset=alt.XOffset("age:N"),
+    y=alt.Y("median_income:Q", title="median income (USD)", scale=alt.Scale(domain=[0, 100000]), axis=alt.Axis(values = [20000, 40000, 60000, 80000, 100000],format="$,.0f")),
+    color=alt.Color("age:N", title="age (yrs)", scale=alt.Scale(scheme="blues"))
+)
+
+
+Chart_6_8
+```
+
+
+
+
+```{python}
+df_9 = pd.read_csv('https://calvin-data304.netlify.app/data/cow-income.csv')
+include_race= ["asian", "white", "hispanic", "black"]
+df_9_filtered = df_9[df_9["race"].isin(include_race)]
+df_9_filtered = df_9_filtered.assign(age=df_9_filtered["age"].str.replace("to", "-"))
+
+Chart_6_9 = alt.Chart(df_9_filtered,width = 300, height = 200).mark_bar().encode(
+  x = alt.X("age:O",title = "age (years)", axis = alt.Axis(labelAngle = 0)),
+  y = alt.Y("median_income:Q", title = "median income (USD)", axis = alt.Axis(format = "$,.0f")),
+  facet = alt.Facet("race:N", title = None)
+).configure_facet(columns = 2).resolve_scale(x = "independent", y = "shared")
+Chart_6_9
+```
+
+
+g.  Recreate Figure 6.11 and explain why Figures 6.12 and 6.13 are labeled “bad”. [\[CSV\]](https://calvin-data304.netlify.app/data/cow-gapminder.csv)
+```{python}
+df3 = pd.read_csv('https://calvin-data304.netlify.app/data/cow-gapminder.csv')
+df3_2007 = df3[(df3["year"] == 2007) & (df3["continent"]== "Americas")]
+Chart_6_11  = alt.Chart(df3_2007,width=400, height=300).mark_point().encode(
+  x = alt.X("lifeExp:Q",title = "life expectancy (years)",
+  scale=alt.Scale(domain=[60, 82]), 
+        axis=alt.Axis(values=[60,65, 70, 75,80], grid = True)),
+  y = alt.Y("country:N",title = "", sort = "-x", axis = alt.Axis(grid = True))
+)
+Chart_6_11
+
+```
+6.12 uses bars, which are too long and draw attention away from the data. 
+6.13 is disordered, it's hard to convey a clear message.
+
+
+
+**Exercise 2 (A video presentation by Healy)**  
+
+b.  List at least three pieces of advice you can glean from this video that might help you design good graphics.
+
+- Good data is important for making good graphics, graphic style should work around the data
+- We should be aware of our visual habits when making graphics
+- a useful strategy for creating visualization is layer important information, highlight the information, and repeat these steps
+
+
+c.  There are two figures in this video that come from Chapter 1 of Tufte ([2001](https://calvin-data304.netlify.app/hw/hw07-perception-and.html#ref-Tufte:2001:Visual)). Did you spot them? Which figures are they?
+
+- nepolian army to Mascrow
+
+**Exercise 3 (Heat maps)**  
+
+a.  In Vega-Lite lingo, what makes something be a heat map?
+
+- a heat map is a graphic comprised of colored rectangles grouped together, in which color is maped to a variable.
+
+b.  Recreate Figure 6.14 or 6.15 from Wilke ([2019](https://calvin-data304.netlify.app/hw/hw07-perception-and.html#ref-Wilke:2019)) (your choice). Or get fancy and include an interactive element that let’s you select the year to order by. [\[CSV\]](https://calvin-data304.netlify.app/data/cow-internet2.csv)
+
+Figure 6.14
+```{python}
+df14 = pd.read_csv('https://calvin-data304.netlify.app/data/cow-internet2.csv')
+df14_wrangled = df14[df14["year"] > 1993]
+# fill in NA
+df14_wrangled.fillna(0, inplace = True)
+# sort order
+sorted_countries = df14_wrangled[df14_wrangled["year"] == 2016].sort_values("users", ascending = False)["country"].tolist()
+
+Chart_6_14 = alt.Chart(df14_wrangled, width = 500, height = 400).mark_rect().encode(
+  x = alt.X("year:O",title = "", axis=alt.Axis(values=[1995,2000, 2005, 2010,2015], labelAngle = 0)),
+  y = alt.Y("country:N", title = "", axis = alt.Axis(orient="right"), sort = sorted_countries),
+  color = alt.Color("users:Q", title = "internet users / 100 people", legend=alt.Legend(orient="top", values = [0,25,50,75,100]),
+  scale = alt.Scale(scheme = 'inferno')))
+Chart_6_14
+```
+
+
+c.  At around 20:10, Healy presents a possible problem with heat maps, what is it?
+
+- Our eyes interpret the relative color differences in different ways because each colored squares are surrounded by other colored squares.
+
+d.  But starting at around 44:12, he presents a heat map as a “show pony”. Why isn’t the problem presented earlier an issue here? Is it an issue in the figure you make in part b? Why or why not?
+
+- In this "show pony" graph, we are interested in the bigger larger pattern, not the indivisual piece. 
+- I think whether it is an issue in the figure I made in part b depends on what we want to interpret. If we are interested to show a bigger larger pattern, it is useful and doesn't have an issue. However, if we want to compare indivisual squares, then it has the issue that the olored squares are surrounded by other colored squares, therefore is not very good.
+
+**Exercise 4 (Pie charts)**  
+
+a.  What does Healy have to say about pie charts in his video?
+
+- It's hard for our eyes to decode angles and relative areas. 
+
+b.  How does that compare to what Wilke says in Section 10.1 of Wilke ([2019](https://calvin-data304.netlify.app/hw/hw07-perception-and.html#ref-Wilke:2019))?
+
+- Wilke also noted that pie chart doesn't allow easy visual comparison of relative porportions.
+
+- In addition, Wilke argues that pie chart does not work well when the whole is broken into many pieces, or for visualization of many sets of proportions or time series of proportions.
+
+- However, Wilke noted that pie chart can clearly visualizes the data as proportions of a whole,emphasize simple fractions, and looks visually appealing for small datasets.
+
+c.  What alternatives does Wilke present to pie charts and in what situations does he favor each? 
+
+- alternatives: stacked bars, side-by-side bars.
+
+- Stacked bars: Stacked bars, like pie chart can visualize the data as proportion of a whole, but in addition can work well fo visualization of many sets of porportions or time series of proportions, however, it does not look visually appealing for small dataset nor emphasizes simple fractions
+
+- Side-by-side bars: Similar with pie chart, side-by-side bars looks visually appealing even for small datasets, in addition, it allows visual comparison of relative proportions and work well when the whole is broken into many pieves which pie chart cannot do. However, it cannot clearly visualizes the data as proportions of a whole, and cannot visually emphasizes simple fractions like pie chart can do. 
+
+d. Recreate Figure 10.1 of Wilke ([2019](https://calvin-data304.netlify.app/hw/hw07-perception-and.html#ref-Wilke:2019)).
+
+
+```{python}
+data = pd.DataFrame({
+    'party': ['FDP','SPD','CDU/CSU'],
+    'seats': [39,214,243]
+})
+
+Order = ['FDP','SPD','CDU/CSU']
+data['order'] = pd.Categorical(data['party'], categories=Order, ordered=True)
+
+
+base = alt.Chart(data, width = 300, height = 300).mark_arc().encode(
+  theta = alt.Theta("seats:Q").stack(True), 
+  color = alt.Color("party:N", legend = None, sort = Order),
+  order = alt.Order("order:O")
+)
+pie = base.mark_arc(outerRadius=120)
+
+text_chart = base.mark_text(radius = 80, size = 25).encode(
+  text = "seats:Q",
+  color = alt.value("white")
+)
+text_chart2 = base.mark_text(radius = 140, size = 10).encode(
+  text = "party:N",
+  color = alt.value("black")
+)
+Total_chart = pie + text_chart + text_chart2
+Total_chart
+```
+-------------------------------------------------------------------------
+
+
+
 ## Homework 6
 
 ### Exercise 1
