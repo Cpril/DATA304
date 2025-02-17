@@ -93,6 +93,7 @@ Chart_6_9 = alt.Chart(df_9_filtered,width = 300, height = 200).mark_bar().encode
   y = alt.Y("median_income:Q", title = "median income (USD)", axis = alt.Axis(format = "$,.0f")),
   facet = alt.Facet("race:N", title = None)
 ).configure_facet(columns = 2).resolve_scale(x = "independent", y = "shared")
+
 Chart_6_9
 ```
 
