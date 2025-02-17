@@ -1,5 +1,5 @@
 ---
-title: "HW_5"
+title: "Homework 5"
 format: html
 author: Priscilla Chen
 editor: visual
@@ -7,11 +7,9 @@ code-fold: true
 embed-resources: true
 ---
 
-## Homework 5
-
 ### Exercise 1
 
-![Graphic](/rprojects/jc253/DATA304/Pictures/Federal_work.png)
+![Graphic](/rprojects/jc253/DATA304/docs/Pictures/Federal_work.png)
 
 **What marks are being used? What variables are mapped to which properties?**
 
@@ -51,9 +49,8 @@ I don't know how to add the brand icon (the "USAFACTS" on the bottom left of the
 
 1.  
 
-```{=html}
 <!-- -->
-```
+
 a.  Create a graphic that shows the high temperature in Seattle each day.
 
 ```{r}

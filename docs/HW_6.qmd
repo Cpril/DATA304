@@ -1,11 +1,10 @@
 ---
-title: "HW_6"
+title: "Homework 6"
 format: html
 editor: visual
+author: Priscilla Chen
 embed-resources: true
 ---
-
-## Homework 6
 
 ### Exercise 1
 
