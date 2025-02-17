@@ -375,6 +375,8 @@ Tufte talked about how time-series graphics are great for richer, more complex, 
 
 
 -----------------------------------------------------------------------------------
-[Homework 6](docs/HW_6.html)
+[Homework 7](HW_7.html)
 
-[Homework 5](docs/HW_5.html)
+[Homework 6](HW_6.html)
+
+[Homework 5](HW_5.html)
