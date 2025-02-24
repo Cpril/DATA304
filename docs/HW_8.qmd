@@ -1,0 +1,290 @@
+---
+title: "Homework 8"
+format: html
+editor: visual
+embed-resources: true
+warning: false
+---
+
+### Exercise 1 (Supply and demand)
+
+```{r}
+#| include: false
+library(reticulate)
+library(dplyr)
+library(tidyr)
+library(readr)
+library(vegabrite)
+```
+
+```{r}
+data_url <- "https://calvin-data304.netlify.app/data/swd-lets-practice-ex-2-3.csv"
+sales_data <- read_csv("https://calvin-data304.netlify.app/data/swd-lets-practice-ex-2-3.csv")
+
+offsetbar <- vl_chart(width = 550, height = 400) |>
+  vl_mark_bar() |>
+  vl_fold(fold = c("demand", "capacity"), as = c("type", "value"))|>
+  vl_encode_x("date:N", axis = list(labelAngle = 0), title = "date (from April 2019 to September 2020)", sort = c("January", "February", "March", "April", "May", "June", "July", 
+                       "August", "September", "October", "November", "December")) |>
+  vl_encode_y("value:Q", title = "Quantity") |>
+  vl_encode_xOffset("type:N",sort = c("demand","capacity")) |>
+  vl_encode_color("type:N", title = "")|>
+  vl_encode_tooltip_array(list("demand","capacity","date"))|>
+  vl_add_data(sales_data)
+offsetbar
+```
+
+```{r}
+layerbar <- vl_chart(width = 550, height = 400) |>
+  vl_calculate(calculate = "datum.demand - datum.capacity", as = "unmet demand") |>
+  vl_fold(fold = c("demand", "capacity", "unmet demand"), as = c("type", "value")) |>
+  vl_filter(filter = ("datum.type === 'capacity' || datum.type === 'unmet demand'")) |>
+  vl_mark_bar() |>
+  vl_encode_x("date:T") |>
+  vl_encode_y("value:Q", stack = "zero", title = "Quantity") |>
+  vl_encode_size("type:N", sort = c("unmet demand", "capacity"), title = "") |>
+  vl_encode_color("type:N", sort = c("unmet demand", "capacity"), title = "",legend = "") |>
+  vl_scale_size(range = c(10,17))|>
+  vl_encode_order("type:N", sort = c("capacity", "unmet demand")) |>
+  vl_encode_tooltip_array(list("unmet demand","capacity"))|>
+  vl_add_data(sales_data)
+layerbar
+```
+
+```{r}
+linechart2 <-vl_chart(width = 550, height = 400)|>
+  vl_mark_line()|>
+  vl_fold(fold = c("demand", "capacity"), as = c("type", "value"))|>
+  vl_encode_x("date:T")|>
+  vl_encode_y("value:Q", title = "Quantity")|>
+  vl_encode_color("type:N", title = "")|>
+  vl_add_data(sales_data)
+linechart2
+```
+
+```{r}
+unmetline <- vl_chart(width = 550, height = 400)|>
+  vl_calculate(calculate = "datum.demand - datum.capacity", as = "unmet demand")|>
+  vl_mark_line()|>
+  vl_encode_x("date:T")|>
+  vl_encode_y("unmet demand:Q", title = "Quantity unmet demand")|>
+  vl_encode_tooltip_array(list("unmet demand","demand","capacity"))|>
+  vl_add_data(sales_data)
+unmetline
+```
+
+```{r}
+stackedbar <- vl_chart(width = 550, height = 400) |>
+  vl_calculate(calculate = "datum.demand - datum.capacity", as = "unmet demand") |>
+  vl_fold(fold = c("demand", "capacity", "unmet demand"), as = c("type", "value")) |>
+  vl_filter(filter = ("datum.type === 'capacity' || datum.type === 'unmet demand'")) |>
+  vl_mark_bar() |>
+  vl_encode_x("date:T") |>
+  vl_encode_y("value:Q", stack = "zero", title = "Quantity") |>
+  vl_encode_color("type:N", sort = c("capacity", "unmet demand"), title = "") |>
+  vl_encode_order("type:N", sort = c("capacity", "unmet demand")) |>
+  vl_encode_tooltip_array(list("unmet demand","capacity"))|>
+  vl_add_data(sales_data)
+stackedbar
+```
+
+```{r}
+vertline <- vl_chart(width = 550, height = 400)|>
+  vl_mark_line()|>
+  vl_encode_x("date:T")|>
+  vl_encode_y("demand:Q",title = "Quantity")|>
+  vl_encode_y2("capacity:Q")|>
+  vl_layer(vl_chart()|>
+             vl_fold(fold = c("demand", "capacity"), as = c("type", "value"))|>
+    vl_mark_point()|>
+      vl_encode_x("date:T")|>
+      vl_encode_y("value:Q")|>
+      vl_encode_color(field = "type:N", title = "")|>
+      vl_encode_fill(field = "type:N", title = ""))|>
+  vl_encode_tooltip_array(list("demand","capacity"))|>
+  vl_add_data(sales_data)
+vertline
+```
+
+
+### Exercise 2 (Jobs)
+
+a.  There was some question as to just what `perc` meant in this data set. Create a graphic that shows the sum of all the values of `perc` in each year separated by men and women. Explain what your graphic reveals about what `perc` means.
+
+    ```{r}
+    jobs_url <- 
+      "https://cdn.jsdelivr.net/npm/vega-datasets@2.8.0/data/jobs.json"
+
+    vl_chart(width = 500, height = 350)|>
+      vl_mark_bar() |>
+      vl_encode_x("year:Q")|>
+      vl_scale_x(domainMin = 1850,domainMax = 2000)|>
+      vl_encode_y("perc:Q")|>
+      vl_scale_y(domainMax = 1)|>
+      vl_encode_color("sex:N")|>
+      vl_add_data_url(jobs_url)
+    ```
+
+-   perc is the number of (men or women) working at a particular job divided by the total number of people working in a particular year
+
+b.  Now modify the graphic from class so that
+
+    -   there are facets for 4 different years (your choice which years),
+
+    -   scatterplots that show the percent of men and of women who worked in various jobs during those years, and
+
+    -   `format=".0%"` is used (in the appropriate place) to display `perc` as a percentages (multiplied by 100 with a % sign appended).
+
+    ```{r}
+    vl_chart()|>
+      vl_filter("datum.year === 1850 || datum.year === 1900 || datum.year === 1950 || datum.year === 2000")|>
+      vl_mark_point()|>
+      vl_pivot("sex", groupby = list("job", "year"), value = "perc") |>
+      vl_encode_y("men:Q")|>
+      vl_scale_y(type = "symlog", constant = 0.00001) |>
+      vl_encode_x("women:Q")|>
+      vl_scale_x(type = "symlog", constant = 0.00001) |>
+      vl_facet("year:N", title = "") |>
+      vl_resolve_axis_x("independent")|>
+      vl_encode_tooltip_array(list("job", "men", "women")) |>
+      vl_add_properties(title =  list( 
+          text = "Percent of men verse women working various jobs",
+          subtitle = "Each dot represents one occupation. Hover to see which occupation it is."
+          ))|>
+      vl_add_data_url(jobs_url)
+
+    ```
+
+c.  Redo part b but show the percentage of men who worked in various jobs and the percentage of women who worked in various jobs. (Part a should have convinced you that this is NOT what `perc` is in the original data set.)
+
+    ```{r}
+    library(jsonlite)
+    jobs_data <- fromJSON(jobs_url)
+    jobs_wide <- jobs_data |>
+      # compute the total count per sex per year
+      group_by(year, sex) |>
+      mutate(total_count_sex = sum(count)) |>
+      ungroup() |>
+      # the percentage for each (sex, job) combination
+      mutate(perc_sex = count / total_count_sex) 
+
+
+    ```
+
+    ```{r}
+    vl_chart()|>
+      vl_filter("datum.year === 1850 || datum.year === 1900 || datum.year === 1950 || datum.year === 2000")|>
+      vl_mark_point()|>
+      vl_pivot("sex", groupby = list("job", "year"), value = "perc_sex") |>
+      vl_encode_y("men:Q")|>
+      vl_scale_y(type = "symlog", constant = 0.00001) |>
+      vl_encode_x("women:Q")|>
+      vl_scale_x(type = "symlog", constant = 0.00001) |>
+      vl_facet("year:N", title = "") |>
+      vl_resolve_axis_x("independent")|>
+      vl_encode_tooltip_array(list("job", "men", "women")) |>
+      vl_add_properties(title =  list( 
+          text = "Percent of men verse women working various jobs",
+          subtitle = ""
+          ))|>
+      vl_add_data(jobs_wide)
+    ```
+
+
+### Exercise 3 (Price at the pump)
+
+Create graphic(s) to compare gas prices in US \$ per gallon. Take advantage of the countries/regions/codes data to do things like use 3-letter codes for countries, group them by region, etc.
+
+Do any countries fail to get matched?
+
+- YES. 28 countries in the country in the gas prices dataset cannot find a match in the country dataset.
+
+
+#### Genderal Trend of Gas Prices 
+
+```{r}
+gas_data <- read_csv("https://calvin-data304.netlify.app/data/pump_price_for_gasoline_us_per_liter.csv")
+country_data <- read_csv("https://raw.githubusercontent.com/lukes/ISO-3166-Countries-with-Regional-Codes/master/all/all.csv")
+
+# Left join
+joined_data <- gas_data |>
+  left_join(country_data, by = c("country" = "name"))
+
+# check how many countries are not matched.
+na_count <- sum(is.na(joined_data$`alpha-3`))
+# na_count
+```
+
+```{r}
+years <- as.character(1991:2016)
+
+vl_chart(width = 550, height = 350) |>
+  vl_fold(fold = years, as = c("year", "gas_price")) |>
+  vl_calculate(calculate = "random()%3", as="random") |>
+  vl_mark_point(filled = TRUE) |>
+  vl_encode_x("year:O",axis = list(labelAngle = 0)) |>
+  vl_encode_xOffset("random")|>
+  vl_encode_y("gas_price:Q", title = "gas prices in US $ per gallon") |>
+  vl_encode_color("year", title = "", legend = "")|>
+  vl_resolve_axis_x("independent")|>
+  vl_encode_tooltip_array(list("year","country","gas_price")) |>
+    vl_add_properties(title =  list( 
+          text = "General Trend of Gas Prices across Years",
+          subtitle = "Each point represent the gas price of a particular country in a particular. Hover to see details"
+          ))|>
+  vl_add_data(joined_data)
+```
+
+
+#### Compare general trend of gas prices between regions
+
+```{r}
+years <- as.character(1991:2016)
+# continents ordered by who has the most countries
+order <- c("Africa","Asia","Europe","Americas", "Oceania", "null")
+
+vl_chart(width = 450, height = 350) |>
+  vl_fold(fold = years, as = c("year", "gas_price")) |>
+  vl_calculate(calculate = "random()%3", as="random") |>
+  vl_mark_point() |>
+  vl_encode_x("year:O",axis = list(labelAngle = 0)) |>
+  vl_encode_y("gas_price:Q", title = "gas prices in US $ per gallon") |>
+  vl_encode_xOffset("random")|>
+  vl_encode_color("year", title = "", legend = "")|>
+  vl_facet("region:N", title = "", sort = order)|>
+  vl_resolve_axis_x("independent")|>
+  vl_encode_tooltip_array(list("year","country","gas_price")) |>
+    vl_add_properties(title =  list( 
+          text = "Compare genderal trend of gas prices between regions",
+          subtitle = "Each point represent the gas price of a particular country in a particular. Hover to see details"
+          ))|>
+  vl_add_data(joined_data)
+```
+
+
+#### compare regions in years
+
+```{r}
+years <- 1991:2016
+# continents ordered by who has the most countries
+order <- c("Africa","Asia","Europe","Americas", "Oceania", "null")
+
+vl_chart(width = 450, height = 350) |>
+  vl_fold(fold = as.character(years), as = c("year", "gas_price")) |>
+  vl_calculate(calculate = "random()%2 -1", as="random") |>
+  vl_add_parameter("year", value = 1991,
+    bind = list(input = "range",min = 1991, max = 2016, step = 1)
+  ) |>
+  vl_filter("toNumber(datum.year) == year") |>
+  vl_mark_point() |>
+  vl_encode_x("region:N",axis = list(labelAngle = 0), sort = order) |>
+  vl_encode_y("gas_price:Q", title = "gas prices in US $ per gallon") |>
+  vl_encode_xOffset("random")|>
+  vl_encode_color("region:N", title = "",legend = "", sort = order)|>
+  vl_encode_tooltip_array(list("year","country","gas_price")) |>
+      vl_add_properties(title =  list( 
+          text = "Compare gas prices between regions in a year",
+          subtitle = "Each point represent the gas price of a particular country in a particular. Hover to see details."
+          ))|>
+  vl_add_data(joined_data)
+```
