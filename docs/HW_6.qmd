@@ -3,6 +3,7 @@ title: "Homework 6"
 format: html
 editor: visual
 author: Priscilla Chen
+code-fold: true
 embed-resources: true
 ---
 

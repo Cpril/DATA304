@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Priscilla Chen">
 
 <title>Homework 8</title>
 <style>
@@ -4298,6 +4299,12 @@ if (HTMLWidgets.shinyMode) {
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Priscilla Chen </p>
+          </div>
+  </div>
     
   
     
@@ -4311,6 +4318,8 @@ if (HTMLWidgets.shinyMode) {
 <section id="exercise-1-supply-and-demand" class="level3">
 <h3 class="anchored" data-anchor-id="exercise-1-supply-and-demand">Exercise 1 (Supply and demand)</h3>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data_url <span class="ot">&lt;-</span> <span class="st">&quot;https://calvin-data304.netlify.app/data/swd-lets-practice-ex-2-3.csv&quot;</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>sales_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://calvin-data304.netlify.app/data/swd-lets-practice-ex-2-3.csv&quot;</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -4325,9 +4334,10 @@ if (HTMLWidgets.shinyMode) {
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_encode_tooltip_array</span>(<span class="fu">list</span>(<span class="st">&quot;demand&quot;</span>,<span class="st">&quot;capacity&quot;</span>,<span class="st">&quot;date&quot;</span>))<span class="sc">|&gt;</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_add_data</span>(sales_data)</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>offsetbar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div id="htmlwidget-e51516b53814d2a620f6" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e51516b53814d2a620f6">{"x":{
+<div id="htmlwidget-a585cdc5b7cc7915ca54" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a585cdc5b7cc7915ca54">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "height": 400,
@@ -4451,6 +4461,8 @@ if (HTMLWidgets.shinyMode) {
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>layerbar <span class="ot">&lt;-</span> <span class="fu">vl_chart</span>(<span class="at">width =</span> <span class="dv">550</span>, <span class="at">height =</span> <span class="dv">400</span>) <span class="sc">|&gt;</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_calculate</span>(<span class="at">calculate =</span> <span class="st">&quot;datum.demand - datum.capacity&quot;</span>, <span class="at">as =</span> <span class="st">&quot;unmet demand&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_fold</span>(<span class="at">fold =</span> <span class="fu">c</span>(<span class="st">&quot;demand&quot;</span>, <span class="st">&quot;capacity&quot;</span>, <span class="st">&quot;unmet demand&quot;</span>), <span class="at">as =</span> <span class="fu">c</span>(<span class="st">&quot;type&quot;</span>, <span class="st">&quot;value&quot;</span>)) <span class="sc">|&gt;</span></span>
@@ -4465,9 +4477,10 @@ if (HTMLWidgets.shinyMode) {
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_encode_tooltip_array</span>(<span class="fu">list</span>(<span class="st">&quot;unmet demand&quot;</span>,<span class="st">&quot;capacity&quot;</span>))<span class="sc">|&gt;</span></span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_add_data</span>(sales_data)</span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>layerbar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div id="htmlwidget-8ccdba556a513b58a7b6" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
-<script type="application/json" data-for="htmlwidget-8ccdba556a513b58a7b6">{"x":{
+<div id="htmlwidget-d3af2df31e0add1c183a" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d3af2df31e0add1c183a">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "height": 400,
@@ -4602,6 +4615,8 @@ if (HTMLWidgets.shinyMode) {
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>linechart2 <span class="ot">&lt;-</span><span class="fu">vl_chart</span>(<span class="at">width =</span> <span class="dv">550</span>, <span class="at">height =</span> <span class="dv">400</span>)<span class="sc">|&gt;</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_mark_line</span>()<span class="sc">|&gt;</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_fold</span>(<span class="at">fold =</span> <span class="fu">c</span>(<span class="st">&quot;demand&quot;</span>, <span class="st">&quot;capacity&quot;</span>), <span class="at">as =</span> <span class="fu">c</span>(<span class="st">&quot;type&quot;</span>, <span class="st">&quot;value&quot;</span>))<span class="sc">|&gt;</span></span>
@@ -4610,9 +4625,10 @@ if (HTMLWidgets.shinyMode) {
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_encode_color</span>(<span class="st">&quot;type:N&quot;</span>, <span class="at">title =</span> <span class="st">&quot;&quot;</span>)<span class="sc">|&gt;</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_add_data</span>(sales_data)</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>linechart2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div id="htmlwidget-73057ea2823889a0d9db" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
-<script type="application/json" data-for="htmlwidget-73057ea2823889a0d9db">{"x":{
+<div id="htmlwidget-25afa308139c747f71be" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-25afa308139c747f71be">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "height": 400,
@@ -4715,6 +4731,8 @@ if (HTMLWidgets.shinyMode) {
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>unmetline <span class="ot">&lt;-</span> <span class="fu">vl_chart</span>(<span class="at">width =</span> <span class="dv">550</span>, <span class="at">height =</span> <span class="dv">400</span>)<span class="sc">|&gt;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_calculate</span>(<span class="at">calculate =</span> <span class="st">&quot;datum.demand - datum.capacity&quot;</span>, <span class="at">as =</span> <span class="st">&quot;unmet demand&quot;</span>)<span class="sc">|&gt;</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_mark_line</span>()<span class="sc">|&gt;</span></span>
@@ -4723,9 +4741,10 @@ if (HTMLWidgets.shinyMode) {
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_encode_tooltip_array</span>(<span class="fu">list</span>(<span class="st">&quot;unmet demand&quot;</span>,<span class="st">&quot;demand&quot;</span>,<span class="st">&quot;capacity&quot;</span>))<span class="sc">|&gt;</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_add_data</span>(sales_data)</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>unmetline</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div id="htmlwidget-b9ef02c6aad3057dc55f" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
-<script type="application/json" data-for="htmlwidget-b9ef02c6aad3057dc55f">{"x":{
+<div id="htmlwidget-1dc590e23f9a6feefadc" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1dc590e23f9a6feefadc">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "height": 400,
@@ -4834,6 +4853,8 @@ if (HTMLWidgets.shinyMode) {
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>stackedbar <span class="ot">&lt;-</span> <span class="fu">vl_chart</span>(<span class="at">width =</span> <span class="dv">550</span>, <span class="at">height =</span> <span class="dv">400</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_calculate</span>(<span class="at">calculate =</span> <span class="st">&quot;datum.demand - datum.capacity&quot;</span>, <span class="at">as =</span> <span class="st">&quot;unmet demand&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_fold</span>(<span class="at">fold =</span> <span class="fu">c</span>(<span class="st">&quot;demand&quot;</span>, <span class="st">&quot;capacity&quot;</span>, <span class="st">&quot;unmet demand&quot;</span>), <span class="at">as =</span> <span class="fu">c</span>(<span class="st">&quot;type&quot;</span>, <span class="st">&quot;value&quot;</span>)) <span class="sc">|&gt;</span></span>
@@ -4846,9 +4867,10 @@ if (HTMLWidgets.shinyMode) {
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_encode_tooltip_array</span>(<span class="fu">list</span>(<span class="st">&quot;unmet demand&quot;</span>,<span class="st">&quot;capacity&quot;</span>))<span class="sc">|&gt;</span></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_add_data</span>(sales_data)</span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>stackedbar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div id="htmlwidget-d313ed521b003fc3c0ff" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d313ed521b003fc3c0ff">{"x":{
+<div id="htmlwidget-476d9df6bd9486c2e76f" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-476d9df6bd9486c2e76f">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "height": 400,
@@ -4973,6 +4995,8 @@ if (HTMLWidgets.shinyMode) {
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>vertline <span class="ot">&lt;-</span> <span class="fu">vl_chart</span>(<span class="at">width =</span> <span class="dv">550</span>, <span class="at">height =</span> <span class="dv">400</span>)<span class="sc">|&gt;</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_mark_line</span>()<span class="sc">|&gt;</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_encode_x</span>(<span class="st">&quot;date:T&quot;</span>)<span class="sc">|&gt;</span></span>
@@ -4988,9 +5012,10 @@ if (HTMLWidgets.shinyMode) {
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_encode_tooltip_array</span>(<span class="fu">list</span>(<span class="st">&quot;demand&quot;</span>,<span class="st">&quot;capacity&quot;</span>))<span class="sc">|&gt;</span></span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_add_data</span>(sales_data)</span>
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>vertline</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div id="htmlwidget-940cb6e1cd8e1ce0b51e" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
-<script type="application/json" data-for="htmlwidget-940cb6e1cd8e1ce0b51e">{"x":{
+<div id="htmlwidget-1c83c0deabc2cf29f58c" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1c83c0deabc2cf29f58c">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "layer": [
@@ -5136,6 +5161,8 @@ if (HTMLWidgets.shinyMode) {
 <ol type="a">
 <li><p>There was some question as to just what <code>perc</code> meant in this data set. Create a graphic that shows the sum of all the values of <code>perc</code> in each year separated by men and women. Explain what your graphic reveals about what <code>perc</code> means.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>jobs_url <span class="ot">&lt;-</span> </span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;https://cdn.jsdelivr.net/npm/vega-datasets@2.8.0/data/jobs.json&quot;</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -5147,9 +5174,10 @@ if (HTMLWidgets.shinyMode) {
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_scale_y</span>(<span class="at">domainMax =</span> <span class="dv">1</span>)<span class="sc">|&gt;</span></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_encode_color</span>(<span class="st">&quot;sex:N&quot;</span>)<span class="sc">|&gt;</span></span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_add_data_url</span>(jobs_url)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div id="htmlwidget-93f9c653e10ad337fd03" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
-<script type="application/json" data-for="htmlwidget-93f9c653e10ad337fd03">{"x":{
+<div id="htmlwidget-ae9362fc5c8178df3cb1" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ae9362fc5c8178df3cb1">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "height": 350,
@@ -5201,6 +5229,8 @@ if (HTMLWidgets.shinyMode) {
 <li><p><code>format=&quot;.0%&quot;</code> is used (in the appropriate place) to display <code>perc</code> as a percentages (multiplied by 100 with a % sign appended).</p></li>
 </ul>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vl_chart</span>()<span class="sc">|&gt;</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_filter</span>(<span class="st">&quot;datum.year === 1850 || datum.year === 1900 || datum.year === 1950 || datum.year === 2000&quot;</span>)<span class="sc">|&gt;</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_mark_point</span>()<span class="sc">|&gt;</span></span>
@@ -5217,9 +5247,10 @@ if (HTMLWidgets.shinyMode) {
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">subtitle =</span> <span class="st">&quot;Each dot represents one occupation. Hover to see which occupation it is.&quot;</span></span>
 <span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>      ))<span class="sc">|&gt;</span></span>
 <span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_add_data_url</span>(jobs_url)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div id="htmlwidget-62d7d4f0ae2b5b44614c" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
-<script type="application/json" data-for="htmlwidget-62d7d4f0ae2b5b44614c">{"x":{
+<div id="htmlwidget-afa692d474c9612e4c96" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-afa692d474c9612e4c96">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "spec": {
@@ -5297,6 +5328,8 @@ if (HTMLWidgets.shinyMode) {
 </div></li>
 <li><p>Redo part b but show the percentage of men who worked in various jobs and the percentage of women who worked in various jobs. (Part a should have convinced you that this is NOT what <code>perc</code> is in the original data set.)</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>jobs_data <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(jobs_url)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>jobs_wide <span class="ot">&lt;-</span> jobs_data <span class="sc">|&gt;</span></span>
@@ -5306,8 +5339,11 @@ if (HTMLWidgets.shinyMode) {
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># the percentage for each (sex, job) combination</span></span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">perc_sex =</span> count <span class="sc">/</span> total_count_sex) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vl_chart</span>()<span class="sc">|&gt;</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_filter</span>(<span class="st">&quot;datum.year === 1850 || datum.year === 1900 || datum.year === 1950 || datum.year === 2000&quot;</span>)<span class="sc">|&gt;</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_mark_point</span>()<span class="sc">|&gt;</span></span>
@@ -5324,9 +5360,10 @@ if (HTMLWidgets.shinyMode) {
 <span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">subtitle =</span> <span class="st">&quot;&quot;</span></span>
 <span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>      ))<span class="sc">|&gt;</span></span>
 <span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_add_data</span>(jobs_wide)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div id="htmlwidget-13eef47d35172cdba123" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
-<script type="application/json" data-for="htmlwidget-13eef47d35172cdba123">{"x":{
+<div id="htmlwidget-0e126aaa615444508607" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0e126aaa615444508607">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "spec": {
@@ -74265,6 +74302,8 @@ if (HTMLWidgets.shinyMode) {
 <section id="genderal-trend-of-gas-prices" class="level4">
 <h4 class="anchored" data-anchor-id="genderal-trend-of-gas-prices">Genderal Trend of Gas Prices</h4>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>gas_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://calvin-data304.netlify.app/data/pump_price_for_gasoline_us_per_liter.csv&quot;</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>country_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/lukes/ISO-3166-Countries-with-Regional-Codes/master/all/all.csv&quot;</span>)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -74275,8 +74314,11 @@ if (HTMLWidgets.shinyMode) {
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># check how many countries are not matched.</span></span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>na_count <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(joined_data<span class="sc">$</span><span class="st">`</span><span class="at">alpha-3</span><span class="st">`</span>))</span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co"># na_count</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>years <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="dv">1991</span><span class="sc">:</span><span class="dv">2016</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">vl_chart</span>(<span class="at">width =</span> <span class="dv">550</span>, <span class="at">height =</span> <span class="dv">350</span>) <span class="sc">|&gt;</span></span>
@@ -74294,9 +74336,10 @@ if (HTMLWidgets.shinyMode) {
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">&quot;Each point represent the gas price of a particular country in a particular. Hover to see details&quot;</span></span>
 <span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>          ))<span class="sc">|&gt;</span></span>
 <span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_add_data</span>(joined_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div id="htmlwidget-1c9f3bf41bd5abd0039e" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1c9f3bf41bd5abd0039e">{"x":{
+<div id="htmlwidget-e318ba8a763ae16d9425" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e318ba8a763ae16d9425">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "height": 350,
@@ -81471,6 +81514,8 @@ if (HTMLWidgets.shinyMode) {
 <section id="compare-general-trend-of-gas-prices-between-regions" class="level4">
 <h4 class="anchored" data-anchor-id="compare-general-trend-of-gas-prices-between-regions">Compare general trend of gas prices between regions</h4>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>years <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="dv">1991</span><span class="sc">:</span><span class="dv">2016</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># continents ordered by who has the most countries</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>order <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Africa&quot;</span>,<span class="st">&quot;Asia&quot;</span>,<span class="st">&quot;Europe&quot;</span>,<span class="st">&quot;Americas&quot;</span>, <span class="st">&quot;Oceania&quot;</span>, <span class="st">&quot;null&quot;</span>)</span>
@@ -81491,9 +81536,10 @@ if (HTMLWidgets.shinyMode) {
 <span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">&quot;Each point represent the gas price of a particular country in a particular. Hover to see details&quot;</span></span>
 <span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>          ))<span class="sc">|&gt;</span></span>
 <span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_add_data</span>(joined_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div id="htmlwidget-fe0e249b0888eedd7b0a" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
-<script type="application/json" data-for="htmlwidget-fe0e249b0888eedd7b0a">{"x":{
+<div id="htmlwidget-59772497cada62ea1ceb" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-59772497cada62ea1ceb">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "spec": {
@@ -88676,6 +88722,8 @@ if (HTMLWidgets.shinyMode) {
 <section id="compare-regions-in-years" class="level4">
 <h4 class="anchored" data-anchor-id="compare-regions-in-years">compare regions in years</h4>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>years <span class="ot">&lt;-</span> <span class="dv">1991</span><span class="sc">:</span><span class="dv">2016</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># continents ordered by who has the most countries</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>order <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Africa&quot;</span>,<span class="st">&quot;Asia&quot;</span>,<span class="st">&quot;Europe&quot;</span>,<span class="st">&quot;Americas&quot;</span>, <span class="st">&quot;Oceania&quot;</span>, <span class="st">&quot;null&quot;</span>)</span>
@@ -88698,9 +88746,10 @@ if (HTMLWidgets.shinyMode) {
 <span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">&quot;Each point represent the gas price of a particular country in a particular. Hover to see details.&quot;</span></span>
 <span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>          ))<span class="sc">|&gt;</span></span>
 <span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vl_add_data</span>(joined_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div id="htmlwidget-ccd4fa7df1f3f52eef0c" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ccd4fa7df1f3f52eef0c">{"x":{
+<div id="htmlwidget-117e3adef10f77fb49af" style="width:auto;height:auto;" class="vegawidget-vl5 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-117e3adef10f77fb49af">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "height": 350,

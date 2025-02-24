@@ -3125,6 +3125,8 @@ vertical-align: -.125em;
 <li><p>Recreate Figure 6.3 in Vega-Lite. <a href="https://calvin-data304.netlify.app/data/cow-movies.csv">[CSV]</a></p></li>
 </ol>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">&quot;https://calvin-data304.netlify.app/data/cow-movies.csv&quot;</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&quot;amount_millions&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;amount&quot;</span>] <span class="op">/</span> <span class="dv">1_000_000</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>chart_6_3 <span class="op">=</span> alt.Chart(df, width<span class="op">=</span><span class="dv">400</span>, height<span class="op">=</span><span class="dv">300</span>).mark_bar().encode(</span>
@@ -3138,6 +3140,7 @@ vertical-align: -.125em;
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        )</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>chart_6_3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 
 
@@ -3196,6 +3199,8 @@ position: relative;
 <li>Recreate Figures 6.8 and 6.9 in Vega-Lite. <a href="https://calvin-data304.netlify.app/data/cow-income.csv">[CSV]</a></li>
 </ol>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df_8 <span class="op">=</span> pd.read_csv(<span class="st">&#39;https://calvin-data304.netlify.app/data/cow-income.csv&#39;</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>include_race <span class="op">=</span> [<span class="st">&quot;asian&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;hispanic&quot;</span>, <span class="st">&quot;black&quot;</span>]</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df_8_filtered <span class="op">=</span> df_8[df_8[<span class="st">&quot;race&quot;</span>].isin(include_race)]</span>
@@ -3209,6 +3214,7 @@ position: relative;
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>Chart_6_8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 
 
@@ -3264,6 +3270,8 @@ position: relative;
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df_9 <span class="op">=</span> pd.read_csv(<span class="st">&#39;https://calvin-data304.netlify.app/data/cow-income.csv&#39;</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>include_race<span class="op">=</span> [<span class="st">&quot;asian&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;hispanic&quot;</span>, <span class="st">&quot;black&quot;</span>]</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>df_9_filtered <span class="op">=</span> df_9[df_9[<span class="st">&quot;race&quot;</span>].isin(include_race)]</span>
@@ -3276,6 +3284,7 @@ position: relative;
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>).configure_facet(columns <span class="op">=</span> <span class="dv">2</span>).resolve_scale(x <span class="op">=</span> <span class="st">&quot;independent&quot;</span>, y <span class="op">=</span> <span class="st">&quot;shared&quot;</span>)</span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>Chart_6_9</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 
 
@@ -3334,6 +3343,8 @@ position: relative;
 <li>Recreate Figure 6.11 and explain why Figures 6.12 and 6.13 are labeled “bad”. <a href="https://calvin-data304.netlify.app/data/cow-gapminder.csv">[CSV]</a></li>
 </ol>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df3 <span class="op">=</span> pd.read_csv(<span class="st">&#39;https://calvin-data304.netlify.app/data/cow-gapminder.csv&#39;</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>df3_2007 <span class="op">=</span> df3[(df3[<span class="st">&quot;year&quot;</span>] <span class="op">==</span> <span class="dv">2007</span>) <span class="op">&amp;</span> (df3[<span class="st">&quot;continent&quot;</span>]<span class="op">==</span> <span class="st">&quot;Americas&quot;</span>)]</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Chart_6_11  <span class="op">=</span> alt.Chart(df3_2007,width<span class="op">=</span><span class="dv">400</span>, height<span class="op">=</span><span class="dv">300</span>).mark_point().encode(</span>
@@ -3343,6 +3354,7 @@ position: relative;
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  y <span class="op">=</span> alt.Y(<span class="st">&quot;country:N&quot;</span>,title <span class="op">=</span> <span class="st">&quot;&quot;</span>, sort <span class="op">=</span> <span class="st">&quot;-x&quot;</span>, axis <span class="op">=</span> alt.Axis(grid <span class="op">=</span> <span class="va">True</span>))</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>Chart_6_11</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 
 
@@ -3425,16 +3437,21 @@ position: relative;
 </ol>
 <p>Figure 6.14</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df14 <span class="op">=</span> pd.read_csv(<span class="st">&#39;https://calvin-data304.netlify.app/data/cow-internet2.csv&#39;</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>df14_wrangled <span class="op">=</span> df14[df14[<span class="st">&quot;year&quot;</span>] <span class="op">&gt;</span> <span class="dv">1993</span>]</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># fill in NA</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>df14_wrangled.fillna(<span class="dv">0</span>, inplace <span class="op">=</span> <span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;string&gt;:2: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sort order</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>sorted_countries <span class="op">=</span> df14_wrangled[df14_wrangled[<span class="st">&quot;year&quot;</span>] <span class="op">==</span> <span class="dv">2016</span>].sort_values(<span class="st">&quot;users&quot;</span>, ascending <span class="op">=</span> <span class="va">False</span>)[<span class="st">&quot;country&quot;</span>].tolist()</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3444,6 +3461,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  color <span class="op">=</span> alt.Color(<span class="st">&quot;users:Q&quot;</span>, title <span class="op">=</span> <span class="st">&quot;internet users / 100 people&quot;</span>, legend<span class="op">=</span>alt.Legend(orient<span class="op">=</span><span class="st">&quot;top&quot;</span>, values <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">25</span>,<span class="dv">50</span>,<span class="dv">75</span>,<span class="dv">100</span>]),</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  scale <span class="op">=</span> alt.Scale(scheme <span class="op">=</span> <span class="st">&#39;inferno&#39;</span>)))</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>Chart_6_14</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 
 
@@ -3538,6 +3556,8 @@ position: relative;
 <li>Recreate Figure 10.1 of Wilke (<a href="https://calvin-data304.netlify.app/hw/hw07-perception-and.html#ref-Wilke:2019">2019</a>).</li>
 </ol>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.DataFrame({</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;party&#39;</span>: [<span class="st">&#39;FDP&#39;</span>,<span class="st">&#39;SPD&#39;</span>,<span class="st">&#39;CDU/CSU&#39;</span>],</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;seats&#39;</span>: [<span class="dv">39</span>,<span class="dv">214</span>,<span class="dv">243</span>]</span>
@@ -3564,6 +3584,7 @@ position: relative;
 <span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>Total_chart <span class="op">=</span> pie <span class="op">+</span> text_chart <span class="op">+</span> text_chart2</span>
 <span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>Total_chart</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 
 

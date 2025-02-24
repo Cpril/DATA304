@@ -1,8 +1,10 @@
 ---
 title: "Homework 8"
 format: html
+author: Priscilla Chen
 editor: visual
 embed-resources: true
+code-fold: true
 warning: false
 ---
 
