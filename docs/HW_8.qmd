@@ -108,7 +108,6 @@ vertline <- vl_chart(width = 550, height = 400)|>
 vertline
 ```
 
-
 ### Exercise 2 (Jobs)
 
 a.  There was some question as to just what `perc` meant in this data set. Create a graphic that shows the sum of all the values of `perc` in each year separated by men and women. Explain what your graphic reveals about what `perc` means.
@@ -192,17 +191,15 @@ c.  Redo part b but show the percentage of men who worked in various jobs and th
       vl_add_data(jobs_wide)
     ```
 
-
 ### Exercise 3 (Price at the pump)
 
 Create graphic(s) to compare gas prices in US \$ per gallon. Take advantage of the countries/regions/codes data to do things like use 3-letter codes for countries, group them by region, etc.
 
 Do any countries fail to get matched?
 
-- YES. 28 countries in the country in the gas prices dataset cannot find a match in the country dataset.
+-   YES. 28 countries in the country in the gas prices dataset cannot find a match in the country dataset.
 
-
-#### Genderal Trend of Gas Prices 
+#### Genderal Trend of Gas Prices
 
 ```{r}
 gas_data <- read_csv("https://calvin-data304.netlify.app/data/pump_price_for_gasoline_us_per_liter.csv")
@@ -237,7 +234,6 @@ vl_chart(width = 550, height = 350) |>
   vl_add_data(joined_data)
 ```
 
-
 #### Compare general trend of gas prices between regions
 
 ```{r}
@@ -262,7 +258,6 @@ vl_chart(width = 450, height = 350) |>
           ))|>
   vl_add_data(joined_data)
 ```
-
 
 #### compare regions in years
 

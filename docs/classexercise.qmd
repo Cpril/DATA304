@@ -1,0 +1,27 @@
+---
+title: "class_exercise"
+format: html
+editor: visual
+embed-resources: true
+---
+
+## **Exercise 5** Describe a qq-plot in terms of the grammar of graphics and the data you need to make one. (You migth start by reminding yourself – or asking someone – what a qq-plot is.)
+
+Create a qq-plot (you may choose the data; perhaps use one of the features of penguins) using the [quantile transform](https://vega.github.io/vega-lite/docs/quantile.html).
+
+qq-plot contains points, line, and area
+
+```{r}
+library(vegabrite)
+library(tidyverse)
+library(palmerpenguins)
+vega_data <- altair::import_vega_data()
+penguins
+```
+
+```{r}
+vl_chart(width = 150, height = 60) |>
+  vl_mark_point()|>
+  vl_encode_x()|>
+  vl_add_data(penguins)
+```
