@@ -68,11 +68,10 @@ alt.Chart(Chem_admit, width=100).transform_density(
 )
 ```
 
-
 e.  Chapters 6 - 16 are organized by graphic types. You have already read some of this material. Pick one chapter that is related to your graphic in part d and give some examples of how what you learned in that chapter affected how you created your graphic.
 
-- Chapter 9 talked about voilin plot. 
-- I started making my voilin plot through grouping by Program Interest, and I found that while some data for program interest worked well, others had a weird shape (a vertical line). The book helped me think about this: "Before using violins to visualize distributions, verify that you have sufficiently many data points in each group to justify showing the point densities as smooth lines". I think those weird shapes might be because there's too few data values for that program interest. 
+-   Chapter 9 talked about voilin plot.
+-   I started making my voilin plot through grouping by Program Interest, and I found that while some data for program interest worked well, others had a weird shape (a vertical line). The book helped me think about this: "Before using violins to visualize distributions, verify that you have sufficiently many data points in each group to justify showing the point densities as smooth lines". I think those weird shapes might be because there's too few data values for that program interest.
 
 **Exercise 2 (More pie)**
 
@@ -131,14 +130,12 @@ Two_year = alt.hconcat(Total_chart_1,Total_chart_2)
 Two_year
 ```
 
-
 For the pie graphs, I used counts, because the pie chart already shows the proportion of a response as a whole. I treated the "no response" as one response because it still represent a proportion of people who didn't respond to the question. It can be a little misleading and less comprehensive if their responses are taken out.
-
 
 b.  Create some other kind of graphic to visualize the same data.
 
-
 **Point Chart**
+
 ```{python}
 Order = ["strongly agree", "agree", "neither agree nor disagree","disagree", "strongly disagree", "no response"]
 survey = alt.Chart(
@@ -153,8 +150,8 @@ survey = alt.Chart(
 survey
 ```
 
-
 **Bar Chart**
+
 ```{python}
 survey_wide = survey_response.pivot(index="response", columns="year", values="count").reset_index()
 survey_wide["change"] = survey_wide["this year"]- survey_wide["last year"]
@@ -168,12 +165,11 @@ survey_bar = alt.Chart(survey_wide, width = 300, height = 300
 survey_bar
 ```
 
-
 c.  Comment on the pros and cons of your two (or more) graphics. Which would you recommend (for what purposes)?
 
 -   The side-by-side pie chart is better at presenting and comparing the proportion of a particular response with another response within one year. It is not great at comparing the responses between last year and this year. In addition, if there is response other than the 6 listed in the dataset, the pie graphics might be misleading in suggesting that these 6 responses make up the whole pool of survey responses.
 -   The point chart is better at comparing the value of each response between years as well as with other responses. It is also more space efficient. However, this point chart does not convey that those 6 responses make up all the survey responses as a whole intuitively.
-- The bar chart is better at viewing the change from last year to this year, especially, it could communicate the direction and magnitude of the change visually. However, it does not show the count of each responses.
+-   The bar chart is better at viewing the change from last year to this year, especially, it could communicate the direction and magnitude of the change visually. However, it does not show the count of each responses.
 
 **Exercise 3 (Create a choropleth map)**
 
@@ -188,6 +184,7 @@ state_map <-
   vl_add_properties(projection = list(type = "albersUsa")) |>
   vl_mark_geoshape(fill = "transparent", stroke = "steelblue")|> vl_add_properties(width = 350, height = 200)
 ```
+
 ```{r}
 obesity_colored <- state_map |>
   vl_lookup(
@@ -204,9 +201,3 @@ obesity_colored <- state_map |>
 
 obesity_colored
 ```
-
-
-
-
-
-

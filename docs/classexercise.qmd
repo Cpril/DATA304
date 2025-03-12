@@ -5,23 +5,62 @@ editor: visual
 embed-resources: true
 ---
 
-## **Exercise 5** Describe a qq-plot in terms of the grammar of graphics and the data you need to make one. (You migth start by reminding yourself – or asking someone – what a qq-plot is.)
-
-Create a qq-plot (you may choose the data; perhaps use one of the features of penguins) using the [quantile transform](https://vega.github.io/vega-lite/docs/quantile.html).
-
-qq-plot contains points, line, and area
-
+## Challenge 1
 ```{r}
-library(vegabrite)
 library(tidyverse)
-library(palmerpenguins)
-vega_data <- altair::import_vega_data()
-penguins
+library(reticulate)
+library(vegabrite)
+library(dplyr)
+library(jsonlite)
+library(mosaic)
+```
+```{python}
+import pandas as pd
+import altair as alt
 ```
 
 ```{r}
-vl_chart(width = 150, height = 60) |>
-  vl_mark_point()|>
-  vl_encode_x()|>
-  vl_add_data(penguins)
+mailing <- fromJSON("https://calvin-data304.netlify.app/data/swd-lets-practice-ex-2-13.json")
+# Wrangling:
+mailing_wrangled <- mailing|>
+  separate(Date, into = c("quarter", "year"), sep = "-")|>
+  mutate(quarter = parse_number(quarter),
+         year = parse_number(year),
+         date_str = paste0(year, "-", 3* quarter -2, "-01"),
+         date = lubridate::ymd(date_str),
+         `Net Completion Rate` = `Response Rate` * `Completion Rate`)
+# convert to long format
+mailing_wrangled <-mailing_wrangled|>
+  pivot_longer(matches("Rate"),
+               names_to = "Rate Type",
+               values_to = "Rate Values")|>
+  filter(`Rate Type`!= "Completion Rate")
 ```
+```{r}
+mailing_wrangled|>
+  vl_chart()|>
+  vl_add_data(mailing_wrangled)|>
+  vl_mark_line()|>
+  vl_encode_x("date:T")|>
+  vl_encode_y("Rate Values:Q")|>
+  vl_encode_color("Rate Type:N")
+```
+
+```{r}
+mailing_wrangled|>
+  vl_chart()|>
+  vl_add_data(mailing_wrangled)|>
+  vl_mark_line()|>
+  vl_encode_x("date:T")|>
+  vl_encode_y("Rate Values:Q")|>
+  vl_encode_color("Rate Type:N")
+
+```
+
+
+
+
+
+
+
+

@@ -1,0 +1,110 @@
+---
+title: "Exercises"
+format: html
+editor: visual
+---
+
+```{r}
+#| include: false
+library(readr)
+library(stringr)
+library(reticulate)
+library(dplyr)
+library(mosaic)
+library(tidyverse)
+library(tidyr)
+library(vegabrite)
+library(base64enc)
+library(vegalite)
+
+```
+
+## **Exercise 3 (A new challenge)**
+
+**a. Enter the data**
+
+```{r}
+tanzania_contraception <- read.csv("/rprojects/jc253/DATA304/docs/tanzania_contraception.csv")
+    
+tanzania_contraception<-tanzania_contraception|>
+  mutate(`No Reproductive Intention` = Current.Use.of.Contraception.Rate + Unmet.Need.for.Family.Planning)|>
+   rename(
+        `Fertility Rate` = Fertility.Rate, 
+        `Current Contraception User` = Current.Use.of.Contraception.Rate,
+        `Unmet Need for Family Planning` = Unmet.Need.for.Family.Planning,
+        Survey_Date = Survey.Year)
+    
+# Convert to long
+    tanzania_contraception_long <- tanzania_contraception |>
+      mutate(Survey_Date = as.Date(Survey_Date, format = "%m/%d/%Y"))|>
+      select(Survey_Date, `Current Contraception User`,`No Reproductive Intention`, `Unmet Need for Family Planning`, `Fertility Rate`)|>
+      pivot_longer(cols = c("No Reproductive Intention","Current Contraception User", "Unmet Need for Family Planning", "Fertility Rate"), names_to = "type", values_to = "values")
+    
+    
+    # tanzania_fertility <- tanzania_contraception|>
+    #   mutate(Survey_Date = as.Date(Survey.Year, format = "%m/%d/%Y"))|>
+    #   rename(`Fertility Rate` = Fertility.Rate)|>
+    #   select(Survey_Date, `Fertility Rate`)
+```
+
+Note: I did some data wrangling in excel:
+
+-   I put the year date into a date format, counting the last day of the survey year(s) as the data date.
+-   I sorted the data by the date.
+
+**b. Use these data to create a visualization that tells a story.**
+
+```{r}
+no_rep_area <-
+vl_chart(width = 400, height = 250)|>
+  vl_filter("datum.type == 'No Reproductive Intention'")|>
+  vl_mark_area(opacity = 0.3)|>
+  vl_encode_x("Survey_Date:T")|>
+  vl_encode_y("values:Q", stack = FALSE, 
+              title = "" )|>
+  vl_scale_y(domain = c(5,61))|>
+  vl_scale_y(zero = FALSE)|>
+  vl_encode_color("type:N")|>
+  vl_encode_tooltip_array(list('Survey_Date:T','type','values'))|>
+
+  vl_add_data(tanzania_contraception_long)
+```
+
+```{r}
+point <-
+vl_chart(width = 400, height = 230)|>
+  vl_filter("datum.type != 'No Reproductive Intention'")|>
+  vl_filter("datum.type != 'Fertility Rate'")|>
+  vl_mark_line(point = TRUE)|>
+  vl_encode_x("Survey_Date:T", title = "")|>
+  vl_encode_y("values:Q", title = "") |> 
+  vl_scale_y(zero = FALSE)|>
+  vl_encode_color("type:N")|>
+  vl_encode_tooltip_array(list('Survey_Date:T','type','values'))|>
+    vl_add_properties(
+    title = list(
+      text = "Rates of All Women in Tanzania (%)",
+      subtitle = "No reproductive intention=unmet need for family planning+current contraception user"
+    )
+  )|>
+  vl_add_data(tanzania_contraception_long)
+rep_intention <- no_rep_area + point
+```
+
+```{r}
+fertility <-
+vl_chart(width = 400, height = 70, title = "Fertility Rate of women aged 15-49 (%)")|>
+  vl_filter("datum.type == 'Fertility Rate'")|>
+  vl_mark_line(point = TRUE)|>
+  vl_encode_x("Survey_Date:T", title = "")|>
+  vl_encode_y("values:Q", title = "")|>
+  vl_scale_y(zero = FALSE)|>
+  vl_encode_color("type:N")|>
+  vl_encode_tooltip_array(list('Survey_Date:T','type', "values"))|>
+  vl_add_data(tanzania_contraception_long)
+```
+
+```{r}
+concat_tanzania <- vl_vconcat(rep_intention, fertility)
+concat_tanzania
+```

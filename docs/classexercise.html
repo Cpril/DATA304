@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Priscilla Chen">
 
-<title>Data 304 Portfolio</title>
+<title>class_exercise</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +18,40 @@ ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
 width: 0.8em;
 margin: 0 0.8em 0.2em -1em;  vertical-align: middle;
+}
+
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+}
+pre.numberSource { margin-left: 3em; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -3042,19 +3075,13 @@ vertical-align: -.125em;
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Data 304 Portfolio</h1>
+<h1 class="title">class_exercise</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Priscilla Chen </p>
-          </div>
-  </div>
     
   
     
@@ -3065,29 +3092,67 @@ vertical-align: -.125em;
 </header>
 
 
-<hr>
-<section id="final-portfolio" class="level3">
-<h3 class="anchored" data-anchor-id="final-portfolio"><a href="Final_Portfolio.html">Final Portfolio</a></h3>
-<hr>
-</section>
-<section id="homework-9" class="level3">
-<h3 class="anchored" data-anchor-id="homework-9"><a href="HW_9.html">Homework 9</a></h3>
-<hr>
-</section>
-<section id="homework-8" class="level3">
-<h3 class="anchored" data-anchor-id="homework-8"><a href="HW_8.html">Homework 8</a></h3>
-<hr>
-</section>
-<section id="homework-7" class="level3">
-<h3 class="anchored" data-anchor-id="homework-7"><a href="HW_7.html">Homework 7</a></h3>
-<hr>
-</section>
-<section id="homework-6" class="level3">
-<h3 class="anchored" data-anchor-id="homework-6"><a href="HW_6.html">Homework 6</a></h3>
-<hr>
-</section>
-<section id="homework-5" class="level3">
-<h3 class="anchored" data-anchor-id="homework-5"><a href="HW_5.html">Homework 5</a></h3>
+<section id="challenge-1" class="level2">
+<h2 class="anchored" data-anchor-id="challenge-1">Challenge 1</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.0.4     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegabrite)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mosaic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Registered S3 method overwritten by &#39;mosaic&#39;:
+  method                           from   
+  fortify.SpatialPolygonsDataFrame ggplot2
+
+The &#39;mosaic&#39; package masks several functions from core packages in order to add 
+additional features.  The original behavior of these functions should not be affected by this.
+
+Attaching package: &#39;mosaic&#39;
+
+The following object is masked from &#39;package:Matrix&#39;:
+
+    mean
+
+The following objects are masked from &#39;package:dplyr&#39;:
+
+    count, do, tally
+
+The following object is masked from &#39;package:purrr&#39;:
+
+    cross
+
+The following object is masked from &#39;package:ggplot2&#39;:
+
+    stat
+
+The following objects are masked from &#39;package:stats&#39;:
+
+    binom.test, cor, cor.test, cov, fivenum, IQR, median, prop.test,
+    quantile, sd, t.test, var
+
+The following objects are masked from &#39;package:base&#39;:
+
+    max, mean, min, prod, range, sample, sum</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> altair <span class="im">as</span> alt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>rates &lt;- read_csv(“https://calvin-data304.netlify.app/data/swd-lets-practice-ex-2-3.csv”) # Wrangline: rates_wrangled &lt;- rates |&gt; separate(col = date, into = c(“Year”, “Month”), sep = “-”)|&gt; mutate(Year = as.integer(Year), Month = as.integer(Month))|&gt; ungroup()</p>
 </section>
 
 </main>
