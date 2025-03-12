@@ -55,40 +55,60 @@ Note: I did some data wrangling in excel:
 **b. Use these data to create a visualization that tells a story.**
 
 ```{r}
-no_rep_area <-
+unmet_need <-
 vl_chart(width = 400, height = 250)|>
-  vl_filter("datum.type == 'No Reproductive Intention'")|>
+  # vl_filter("datum.type == 'No Reproductive Intention'")|>
   vl_mark_area(opacity = 0.3)|>
   vl_encode_x("Survey_Date:T")|>
-  vl_encode_y("values:Q", stack = FALSE, 
-              title = "" )|>
+  vl_encode_y("No Reproductive Intention:Q",title = "" )|>
+  vl_encode_y2("Current Contraception User:Q", title = "")|>
   vl_scale_y(domain = c(5,61))|>
   vl_scale_y(zero = FALSE)|>
-  vl_encode_color("type:N")|>
-  vl_encode_tooltip_array(list('Survey_Date:T','type','values'))|>
+  # vl_encode_color("type:N")|>
+  # vl_encode_tooltip_array(list('Survey_Date:T','type','values'))|>
 
-  vl_add_data(tanzania_contraception_long)
+  vl_add_data(tanzania_contraception)
+unmet_need
+
 ```
+
+```{r}
+unmet_need_rule <-
+  vl_chart(width = 400, height = 250)|>
+  vl_mark_rule()|>
+  vl_encode_x("Survey_Date:T")|>
+  vl_encode_y("No Reproductive Intention:Q",title = "" )|>
+  vl_encode_y2("Current Contraception User:Q", title = "")|>
+  vl_scale_y(domain = c(5,61))|>
+  vl_scale_y(zero = FALSE)|>
+  vl_encode_tooltip_array(list("Unmet Need for Family Planning"))|>
+  vl_add_data(tanzania_contraception)
+
+unmet_need_rule
+```
+
 
 ```{r}
 point <-
 vl_chart(width = 400, height = 230)|>
-  vl_filter("datum.type != 'No Reproductive Intention'")|>
+  vl_filter("datum.type != 'Unmet Need for Family Planning'")|>
   vl_filter("datum.type != 'Fertility Rate'")|>
   vl_mark_line(point = TRUE)|>
   vl_encode_x("Survey_Date:T", title = "")|>
   vl_encode_y("values:Q", title = "") |> 
   vl_scale_y(zero = FALSE)|>
-  vl_encode_color("type:N")|>
+  vl_encode_color("type:N", title = "")|>
   vl_encode_tooltip_array(list('Survey_Date:T','type','values'))|>
     vl_add_properties(
     title = list(
-      text = "Rates of All Women in Tanzania (%)",
-      subtitle = "No reproductive intention=unmet need for family planning+current contraception user"
+      text = "Contraception Use and Reproductive Intention (% of All Women)",
+      subtitle = "Black vertical line = Unmet Need for Family Planning"
     )
   )|>
   vl_add_data(tanzania_contraception_long)
-rep_intention <- no_rep_area + point
+# point
+total <- unmet_need + point + unmet_need_rule
+  total
 ```
 
 ```{r}
@@ -105,6 +125,6 @@ vl_chart(width = 400, height = 70, title = "Fertility Rate of women aged 15-49 (
 ```
 
 ```{r}
-concat_tanzania <- vl_vconcat(rep_intention, fertility)
+concat_tanzania <- vl_vconcat(total, fertility)
 concat_tanzania
 ```
