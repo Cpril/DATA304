@@ -1,16 +1,20 @@
 ---
-title: "Final Portfolio"
-format: html
+title: "Data Visualization Portfolio"
+format: 
+  html:
+    toc: true
+    self-contained: true
 editor: visual
 embed-resources: true
+echo: false
 code-fold: true
-code-tools: true
 execute:
   warning: false
 author: Priscilla Chen
 ---
 
-# **Final Portfolio**
+
+This project displays applications of data visualizations in multiple areas of study.
 
 ```{r}
 #| include: false
@@ -25,476 +29,14 @@ library(base64enc)
 library(vegalite)
 ```
 
-**Dataset Used: **
 
-Exercise 1: 
 
-- [genetic_wide](https://calvin-data304.netlify.app/data/twins-genetics-wide.csv)
+## Neuroscience: Visualizing hemispheric Coherence
 
-- [genetic_long](https://calvin-data304.netlify.app/data/twins-genetics-long.csv)
+I worked on a research project with a neuroscience professor who collected EEG data from participants with AgCC (a neuro-developmental disorder resulting the absence of a brain structure called Corpus Collosum) and neurotypical individuals.
 
-Exercise 2:
+This visualization compares differences in EEG Coherence for interhemisphere and withinhemisphere measures and how these differences differ between neurotypical participants and that with AgCC. 
 
-- [feb2020_nps](Feb2020_nps.csv)
-
-- [nps_conponents](nps_conponents.csv)
-
-- [nps_conpetitors](nps_conpetitors.csv)
-
-Exercise 3:
-
-- [tanzania_contraception](tanzania_contraception.csv)
-
-Exercise 4: 
-
-- [eeg_data](EEG_data.csv)
-
-
-## **Exercise 1 (HW 4 revision)**
-
-**a. Find an example that has that has something you like about it and explain what you like.**
-
-I like the comparing kit graph made by Alayna Smith. I particularly love the choice of a box plot, it shows some insights about the distribution of data points, and enables a clear and convenient comparison between the kits because they are side-by-side next to each other.
-
-**b. Find an example that has somethng you don’t like, and explain what you don’t like about it.**
-
-I did not like the comparing kit graphic I made. I didn't like organization of it. The use of selection parameter doesn't allow readers to get an insight of the whole dataset with one glance. Furthermore, the use of bars take up unessensary space, and the x axis labels as flipped sideways.
-
-**c. Now create two graphics, one that helps compare the kits and one that helps compare twins.**
-
-```{r}
-
-genetic_wide <- read_csv("https://calvin-data304.netlify.app/data/twins-genetics-wide.csv", show_col_types = FALSE)
-genetic_long <- read_csv("https://calvin-data304.netlify.app/data/twins-genetics-long.csv", show_col_types = FALSE)
-
-# Wrangling
-genetic_dif <- genetic_long |>
-  select(twin, region, kit, `genetic share`)|>
-  pivot_wider(names_from = twin, values_from = `genetic share`)|>
-    mutate(across(ends_with("A"), ~ abs(. - get(sub("A$", "B", cur_column()))), .names = "diff_{.col}"))|>
-  select(region, kit, starts_with("diff_")) 
-
-
-genetic_dif_long <- genetic_dif |>
-  pivot_longer(cols = c(ends_with("A")) , names_to = "dif_pair", values_to = "Genetic Share Differences")|>
-  mutate(dif_pair = parse_number(dif_pair))
-
-# print(genetic_dif_long)
-
-# Order arranged by the range of the genetic share differences
-region_order <- list("East Asia","Central Africa","NW Europe","West Africa","SE Europe")
-kit_order <- list("Ancestry", "23andMe", "MyHeritage")
-
-# Omit na
-genetic_dif_long <- na.omit(genetic_dif_long)
-# print(genetic_dif_long)
-```
-
-```{r}
-# The scatter plot
-comp_kit_scatter <- vl_chart(width = 350, height = 300)|>
-  vl_add_properties(title =  list( 
-      text = "Ancestry Genetic Kits detectected least inaccurate differences between identical twins"
-      ),
-      description = "Scatterplot of Genetic Share Differences facetted by Genetic Kit. Ancestry found the least false differences between identical twins, better than 23andMe, which is better than MyHeritage")|>
-  vl_mark_point(size = 15, opacity = 0.6)|>
-  vl_calculate(calculate = "(random() - 0.5) * 0.01", as = "random") |>
-  vl_encode_y("Genetic Share Differences:Q")|>
-  vl_encode_x("kit:N", title = "", sort = kit_order)|>
-  vl_encode_xOffset("random:Q")|>
-  vl_scale_x(paddingInner = 0.6)|>
-  vl_scale_y(type = "symlog", constant = 0.001) |>
-  vl_encode_color("kit:N", legend = FALSE)|>
-  vl_encode_fill("kit:N", legend = FALSE)|>
-  vl_encode_tooltip_array(list("kit","region" ,"Genetic Share Differences"))|>
-  vl_add_data(genetic_dif_long)
-# comp_kit_scatter
-
-
-# Box plot 
-comp_kit_box <- vl_chart(width = 350, height = 300)|>
-  vl_add_properties(title =  list( 
-      text = "Ancestry test kit detectected the least inaccurate differences between identical twins while myHeritage test kit the most",
-      subtitle = "Genetic Share Differences are calculated by taking the absolute value of the difference between genetic share of the twins."
-      ),
-      description = "Ancestry found the least false differences between identical twins, better than 23andMe, which is better than MyHeritage")|>
-  vl_mark_boxplot(opacity = 0.5, size = 70, outliers = FALSE)|>
-  vl_encode_y("Genetic Share Differences:Q")|>
-  vl_encode_x("kit:N", title = "",axis = list(labelAngle = 0), sort = kit_order)|>
-  vl_scale_y(type = "symlog", constant = 0.001) |>
-    vl_encode_color("kit:N", legend = FALSE)|>
-  vl_encode_fill("kit:N", legend = FALSE)|>
-  vl_add_data(genetic_dif_long)
-# comp_kit_box
-
-comp_kit_total <- comp_kit_box + comp_kit_scatter
-comp_kit_total
-```
-
-```{r,warning=FALSE}
-genetic_dif_twin <- genetic_long |>
-  select(pair,id,region,kit,`genetic share`)|>
-  pivot_wider(names_from = id, values_from = `genetic share`)|>
-  mutate(dif = abs(A-B))
-
-# View the result
- # print(genetic_dif_twin)
-
-comp_twin <- vl_chart(width = 300, height = 300)|>
-  # vl_add_properties(title =  list( 
-  #     text = "Most test kit accurately detected no difference between identical twins, with some exceptions"
-  #     ))|>
-  vl_mark_point()|>
-  vl_encode_x("A:Q", title = "Genetic Share of Twin A")|>
-  vl_scale_x(type = "symlog", constant = 0.8) |>
-  vl_encode_y("B:Q", title = "Genetic Share of Twin B")|>
-  vl_scale_y(type = "symlog", constant = 0.8) |>
-  vl_encode_color("kit:N")|>
-  vl_encode_fill("kit:N")|>
-  vl_encode_tooltip_array(list("pair","A","B","dif","kit","region"))|>
-  vl_add_data(genetic_dif_twin)
-# comp_twin
-
-ref_line <- data.frame(
-  x = as.double(c(0, 1)),
-  y = as.double(c(0, 1))
-)
-
-# print(ref_line)
-
-# Make a linear line as a reference
-ref_line <- vl_chart(width = 250, height = 250)|>
-  vl_mark_line(opacity = 0.5)|>
-  vl_encode_x("x:Q", title = "")|>
-  vl_encode_y("y:Q", title = "")|>
-  vl_add_data(ref_line)
-  # ref_line
-
-comp_twin_total <- ref_line + comp_twin
-#comp_twin_total
-```
-
-```{r}
-# Making the Pair Difference graph
-pair_order <- list("1","3","6","4","2","5")
-genetic_dif_long$dif_pair <- factor(genetic_dif_long$dif_pair, levels = pair_order)
-
-pair_dif <- vl_chart(width = 150, height = 250)|>
-  vl_mark_point(fill = TRUE)|>
-  vl_encode_x("dif_pair:N",sort = pair_order,axis = list(labelAngle = 0), title = "Pair ID")|>
-  vl_encode_y("Genetic Share Differences:Q")|>
-  vl_scale_y(type = "symlog", constant = 0.01) |>
-  vl_encode_color("kit:N")|>
-  vl_encode_fill("kit:N")|>
-  # vl_encode_tooltip_array(list("pair","A","B","dif","kit","region"))|>
-  vl_add_data(genetic_dif_long)
-
-# Concat
-concat_twin <- vl_hconcat(comp_twin_total,pair_dif)|>
-  vl_add_properties(
-    title = list(
-      text = "Test kits found little differences in Genetic Shares of Identical Twins, with some exception",
-      subtitle = "Genetic Share Differences are calculated by taking the absolute value of the difference between genetic share of the twins."
-    )
-  )
-concat_twin
-```
-
-**d. For each graphic, include a paragraph that tells the story of your graphic.**
-
-Comparing Kit:
-
--   The range of the genetic share differences is from 0 to 0.1; Most datapoints lies below 0.01. 
-
--   Ancestry found the least false differences between identical twins, better than 23andMe, which is better than MyHeritage;
-
-Comparing Twin:
-
--   Most genetic share detected by test kits found little or no difference between identical twins, with some expections such as the West Africa genetic share of pair 3 by 23andMe which detected a 0.06 difference, the SE Europe genetic share of pair 1 by MyHeritage which detected a 0.094 difference;
-
--   The range of the genetic share differences is from 0 to 0.1;
-
--   test kits detected the most genetic share differences in twin pair 1, followed by twin pair 3,6,4,2, and the least in pair 5.
-
-## **Exercise 2 (Data and graphics challenge)**
-
-**Challenges 3:** **How our business compares to other businesses (over time and in February 2020)**
-
-```{r,feb2020, warning:false}
-feb2020_nps <- read_csv("/rprojects/jc253/DATA304/docs/Feb2020_nps.csv", show_col_types = FALSE)
-# Add a column for categorical
-feb2020_nps <- feb2020_nps|>
-  mutate(category = "feb-2020")|>
-  mutate(isourbus = (business == "OUR BUSINESS"))
-  # pivot_wider(names_from = business, values_from = nps)
-base <-
-vl_chart(width = 300, height = 50)|>
-  vl_calculate("random()", as = "random")|>
-  vl_mark_point()|>
-  vl_encode_y("category:N", title = "")|>
-  vl_encode_yOffset("random")|>
-  vl_encode_x("nps:Q", title = "")|>
-  vl_scale_x(zero = FALSE)|>
-  vl_encode_color("isourbus:N", legend = FALSE)|>
-  vl_encode_fill("isourbus:N", legend = FALSE)|>
-  vl_add_data(feb2020_nps)
-
-rule <-
-  vl_chart(width = 300, height = 50) |>
-  vl_add_data(feb2020_nps)|>
-  vl_filter("datum.isourbus == true")|>
-  vl_mark_rule() |>
-  vl_encode_x("nps:Q", title = "") |>
-  vl_scale_x(domainMin = 18,domainMax = 47)|>
-  vl_encode_color(value = "black")
-
-text <-
-  vl_chart(width = 300, height = 50) |>
-  vl_filter("datum.isourbus == true")|>
-  vl_mark_text(text = "Our Business", size = 10)|>
-  vl_calculate(calculate = "datum.nps + 3.5", as = "text_pos")|>
-  vl_encode_x("text_pos:Q", title = "")|>
-  vl_scale_x(domainMin = 18,domainMax = 47)|>
-  vl_encode_y(value = 8)|>
-  vl_encode_color(value = "black")|>
-  vl_add_data(feb2020_nps)
-
-
-feb_2020 <- vl_layer(base,rule, text)
-
-
-```
-
-```{r,conpetitor_overtime}
-nps_conponents <- read_csv("/rprojects/jc253/DATA304/docs/nps_conponents.csv", show_col_types = FALSE)
-nps_conpetitors <- read_csv("/rprojects/jc253/DATA304/docs/nps_conpetitors.csv", show_col_types = FALSE)
-# join two datasets - nps_conpetitors and nps_conponents(nps column)
-nps_conpetitors <- nps_conpetitors |>
-  inner_join(select(nps_conponents, month, NPS), by = "month")|>
-  rename(`Our Business` = NPS)|>
-  pivot_longer(cols = c("Competitor A", "Competitor B", "Competitor C", "Competitor D", "Our Business"), names_to = "Company", values_to = "NPS")
-
-nps_conpetitors$month <- dmy(paste("01", nps_conpetitors$month))
-
-
-base <-
-vl_chart(width = 300, height = 200, title = "Net Promotor Score")|>
-  vl_mark_line(opacity = 0.7)|>
-  vl_encode_x("month:T", title = "")|>
-  vl_encode_y("NPS:Q", title = "")|>
-  vl_scale_y(zero = FALSE, domainMin = 20, domainMax = 50)|>
-  vl_encode_detail("Company:N")|>
-  vl_encode_color(value = "grey")|>
-  vl_encode_tooltip_array(list("Company", "NPS"))|>
-  vl_add_data(nps_conpetitors)
-
-highlight <- 
-vl_chart(width = 300, height = 200)|>
-  vl_mark_line(size = 3)|>
-  vl_filter("datum.Company == 'Our Business'")|>
-  vl_encode_x("month:T")|>
-  vl_encode_y("NPS:Q", title = "")|>
-  vl_scale_y(zero = FALSE, domainMin = 20, domainMax = 50)|>
-  vl_encode_color(value = "black")|>
-  vl_add_data(nps_conpetitors)
-
-text <-
-  vl_chart(width = 300, height = 200)|>
-  vl_mark_text(text = "Our Busincess")|>
-  vl_encode_x(value = 340)|>
-  vl_encode_y(value = 89)|>
-  vl_add_data(nps_conpetitors)
-
-competition_overtime <- base + highlight + text
-# competition_overtime
-```
-
-Our Business shows a consistently lower NPS compared to 3 top competitors, and consistently higher NPS compared to 1 top competitor. In February 2020, our business obtained a higher NPS than all but three other companies.
-
-```{r}
-competition_complete <- vl_vconcat(competition_overtime, feb_2020)
-competition_complete
-```
-
-**How the components of the net promoter score for our business have changed over time?**
-
-```{r, components}
-nps_conponents$month <- dmy(paste("01", nps_conponents$month))
-nps_conponents <- nps_conponents|>
-  select("month","Detractor", "Passive", "Promoter")|>
-  pivot_longer(cols = c("Detractor", "Passive", "Promoter"),
-               values_to = "Score",
-               names_to = "component")|>
-  mutate(Score = parse_number(Score))
-# print(as.tibble(nps_conponents))  
-
-# 
-stacked_bar <-
-vl_chart(title = "Percentage of Survey Response")|>
-  vl_mark_bar(size = 10)|>
-  vl_encode_y("Score:Q", stack = TRUE, title = "")|>
-  vl_encode_x("month:T")|>
-  vl_encode_color("component:N")|>
-  vl_scale_color(domain = c("Promoter", "Passive", "Detractor"),
-                  range = c("green", "grey", "red"))|>
-  vl_add_data(nps_conponents)
-
-
-# vl_chart()|>
-#   vl_mark_point(size = 10)|>
-#   vl_encode_y("Score:Q", title = "Score (% of survey response)")|>
-#   vl_encode_x("month:T")|>
-#   vl_encode_color("component:N")|>
-#   vl_scale_color(domain = c("Promoter", "Passive", "Detractor"),
-#                   range = c("green", "grey", "red"))|>
-#   vl_add_data(nps_conponents)
-```
-
-```{r}
-nps_conponents <- read_csv("/rprojects/jc253/DATA304/docs/nps_conponents.csv")
-nps_conponents$month <- dmy(paste("01", nps_conponents$month))
-
-nps_conponents <- nps_conponents|>
-   mutate(
-     Detractor = round(parse_number(Detractor) / 100 * `# of ratings`),
-     Passive = round(parse_number(Passive) / 100 * `# of ratings`),
-     Promoter = round(parse_number(Promoter) / 100 * `# of ratings`))|>
-  select("month","Detractor", "Passive", "Promoter")|>
-  pivot_longer(cols = c("Detractor", "Passive", "Promoter"),
-               values_to = "Score",
-               names_to = "component")
-
-component_point <-
-vl_chart(title = "Number of Survey Responses")|>
-  vl_mark_line(point = TRUE)|>
-  vl_encode_y("Score:Q", title = "")|>
-  vl_encode_x("month:T")|>
-  vl_encode_color("component:N")|>
-  vl_scale_color(domain = c("Promoter", "Passive", "Detractor"),
-                  range = c("green", "grey", "red"))|>
-  vl_add_data(nps_conponents)
-```
-
-```{r}
-concat_nps <- vl_hconcat(component_point, stacked_bar)
-concat_nps
-```
-
-Percentage of Passive response decreases, while the percentage of detractor and promoter increases overtime. In addition, the counts of detractor increase steadily overtime, while number of passive response slightly increases in April and May of 2019 which contradict the overall trend, and the number of promoter responses has some fluctuation between May and October of 2019.
-
-
-## **Exercise 3 (A new challenge)**
-
-**a. Enter the data**
-
-```{r}
-tanzania_contraception <- read.csv("/rprojects/jc253/DATA304/docs/tanzania_contraception.csv")
-    
-tanzania_contraception<-tanzania_contraception|>
-  mutate(`No Reproductive Intention` = Current.Use.of.Contraception.Rate + Unmet.Need.for.Family.Planning)|>
-   rename(
-        `Fertility Rate` = Fertility.Rate, 
-        `Current Contraception User` = Current.Use.of.Contraception.Rate,
-        `Unmet Need for Family Planning` = Unmet.Need.for.Family.Planning,
-        Survey_Date = Survey.Year)
-    
-# Convert to long
-    tanzania_contraception_long <- tanzania_contraception |>
-      mutate(Survey_Date = as.Date(Survey_Date, format = "%m/%d/%Y"))|>
-      select(Survey_Date, `Current Contraception User`,`No Reproductive Intention`, `Unmet Need for Family Planning`, `Fertility Rate`)|>
-      pivot_longer(cols = c("No Reproductive Intention","Current Contraception User", "Unmet Need for Family Planning", "Fertility Rate"), names_to = "type", values_to = "values")
-    
-    
-    # tanzania_fertility <- tanzania_contraception|>
-    #   mutate(Survey_Date = as.Date(Survey.Year, format = "%m/%d/%Y"))|>
-    #   rename(`Fertility Rate` = Fertility.Rate)|>
-    #   select(Survey_Date, `Fertility Rate`)
-```
-
-Note: I did some data wrangling in excel:
-
--   I put the year date into a date format, counting the last day of the survey year(s) as the data date.
--   I sorted the data by the date.
-
-**b. Use these data to create a visualization that tells a story.**
-
-```{r}
-unmet_need <-
-vl_chart(width = 400, height = 250)|>
-  # vl_filter("datum.type == 'No Reproductive Intention'")|>
-  vl_mark_area(opacity = 0.3)|>
-  vl_encode_x("Survey_Date:T")|>
-  vl_encode_y("No Reproductive Intention:Q",title = "" )|>
-  vl_encode_y2("Current Contraception User:Q", title = "")|>
-  vl_scale_y(domain = c(5,61))|>
-  vl_scale_y(zero = FALSE)|>
-  # vl_encode_color("type:N")|>
-  # vl_encode_tooltip_array(list('Survey_Date:T','type','values'))|>
-
-  vl_add_data(tanzania_contraception)
-# unmet_need
-
-unmet_need_rule <-
-  vl_chart(width = 400, height = 250)|>
-  vl_mark_rule()|>
-  vl_encode_x("Survey_Date:T")|>
-  vl_encode_y("No Reproductive Intention:Q",title = "" )|>
-  vl_encode_y2("Current Contraception User:Q", title = "")|>
-  vl_scale_y(domain = c(5,61))|>
-  vl_scale_y(zero = FALSE)|>
-  vl_encode_tooltip_array(list("Unmet Need for Family Planning"))|>
-  vl_add_data(tanzania_contraception)
-
-# unmet_need_rule
-
-point <-
-vl_chart(width = 400, height = 230)|>
-  vl_filter("datum.type != 'Unmet Need for Family Planning'")|>
-  vl_filter("datum.type != 'Fertility Rate'")|>
-  vl_mark_line(point = TRUE)|>
-  vl_encode_x("Survey_Date:T", title = "")|>
-  vl_encode_y("values:Q", title = "") |> 
-  vl_scale_y(zero = FALSE)|>
-  vl_encode_color("type:N", title = "")|>
-  vl_encode_tooltip_array(list('Survey_Date:T','type','values'))|>
-    vl_add_properties(
-    title = list(
-      text = "Contraception Use and Reproductive Intention (% of All Women)",
-      subtitle = "Black vertical line = Unmet Need for Family Planning"
-    )
-  )|>
-  vl_add_data(tanzania_contraception_long)
-# point
-total <- unmet_need + point + unmet_need_rule
-  # total
-```
-
-```{r}
-fertility <-
-vl_chart(width = 400, height = 70, title = "Fertility Rate of women aged 15-49 (%)")|>
-  vl_filter("datum.type == 'Fertility Rate'")|>
-  vl_mark_line(point = TRUE)|>
-  vl_encode_x("Survey_Date:T", title = "")|>
-  vl_encode_y("values:Q", title = "")|>
-  vl_scale_y(zero = FALSE)|>
-  vl_encode_color("type:N")|>
-  vl_encode_tooltip_array(list('Survey_Date:T','type', "values"))|>
-  vl_add_data(tanzania_contraception_long)
-```
-
-```{r}
-concat_tanzania <- vl_vconcat(total, fertility)
-concat_tanzania
-```
-**c. Write a few sentences explaining the story told.**
-
--   According to DHS survey data collected from 1992 to 2016, unmet need for family planning among all women in Tanzania, the percentage of women who do not want to become pregnant but are not using contraception, slightly decreases from 27.8% in 1992 to 22.1% in 2016, except from 2000 to 2006 which the unmet need for family planning increases by 19.6.
-
--   The use of contraception among all women in Tanzania sharply increases from 5.9% to 38.4%.
-
--   Fertility Rate among women aged 15-49 overall decreased by 1% from 1992 to 2016, the decrease is steady except from 2000 to 2006 where the fertility rate increased by 0.1%.
-
-## **Exercise 4 (Your masterpiece)**
 
 ```{r, load_data}
 
@@ -652,48 +194,466 @@ eeg_total <- vl_vconcat(dif, scatter_plot, explain_brain)
 eeg_total
 ```
 
-b.  Explain the choices you made when designing your graphic and relate them to principles of good graphics that we have learned or seen in this class. Mention alternatives to your graphic that you considered but did not opt to submit.
 
-- For the top box plot, I chose a horizontal layout because the screen layout the wider than longer so a longer box plot graphic fits better on the screen. I also removed the x axis label and used a overall title to convey this information instead, it avoids confusing with the graphic labels below. In addition, I scaled the x axis with a symlog scale, so that the values around 0 shows up more than the outlier values. (This is affirming a well-studied pattern that when participants observe emotion, the brain enters an arousal state, therefore we expect to see less alpha waves and more Beta and Theta waves. This graphic affirms the expectation, and thus confirm the measurements are correct)
+**Rationales for Visual Design**
+- I chose a horizontal layout for the top box plot, because the screen layout the wider than longer so a longer box plot graphic fits better on the screen. I also removed the x axis label and used a overall title to convey this information instead, it avoids confusing with the graphic labels below. In addition, I scaled the x axis with a symlog scale, so that the values around 0 shows up more than the outlier values. (It shows this data affirms a well-studied pattern that when participants observe emotion, the brain enters an arousal state, therefore we expect to see less alpha waves and more Beta and Theta waves.)
 
-- For the middle facet graphics, I took inspiration from the jobs of men and women graphic we studied in class, created a scatterplot with EEG Coherence for NT on one axis, ACC on the other axis. This shows a clearer comparison between NT and ACC EEG scores. Furthermore, facet, zooming, and panning work together to enable not only comparison between interhemisphere and withinhemisphere, as well as a more detailed look into the data values in each hemisphere condition. I used color to encode wavelength because it's beneficial to know the general distribution of each wavelength cluster, however, comparing the EEG Coherence values among the wavelengths are not very important. (This is directly explore the research hypothesis of this study: Participants with ACC will have less interhemisphere EEG Coherence but higher withinhemisphere EEG Coherence, compared to neurotypical participants)
+-   For the middle facet graphics, I created a scatterplot with EEG Coherence for NT on one axis, ACC on the other axis. This shows a clearer comparison between NT and ACC EEG scores. *Facet, zooming, and panning* are implemented to enable not only comparison between interhemisphere and withinhemisphere, as well as a more detailed look into the data values in each hemisphere condition. *Color* to encode wavelength, distinguishing between wavelength cluster, however, comparing the EEG Coherence values among the wavelengths are not the primary goal. (This is directly explore the research hypothesis of this study: Participants with ACC will have less interhemisphere EEG Coherence but higher withinhemisphere EEG Coherence, compared to neurotypical participants)
 
-- For the bottom image & text graphic, I used it to add more information. Because this dataset is more technical and contains some jargon, I think it can be benefitcial to state what NT and ACC means with an image and text.
-
-- Overall layout seeks to investicate how EEG coherence change between Control and Emotion condition for each of the three wavelength, then dive deeper in how EEG coherence scores are different for NT and ACC participants for Interhemisphere and Withinhemisphere.
-
-- Alternatively, I toyed with creating a boxplot, facet/offset with all three conditions (Control/Emotion, NT/ACC, and wavelength). However, the graphic became too long, and not very informative because there were too much information on the page.
+-   The bottom image & text graphic adds more information. Because this dataset is more technical and contains some jargon, it can be benefitcial to state what NT and ACC means with an image and text.
 
 
+## Biology: Visualizing Genetic Testing in Identical Twins
 
-## **Exercise 5 (Using your palette)**
+**a. Find an example that has that has something you like about it and explain what you like.**
 
-**a. an encoding channel other than x or y.** Color Encoding channel in Exercise 2, Graphic 2.
+I like the comparing kit graph made by Alayna Smith. I particularly love the choice of a box plot, it shows some insights about the distribution of data points, and enables a clear and convenient comparison between the kits because they are side-by-side next to each other.
 
-**b. layers:** Overlay Datapoints on Boxplot. Exercise 1, Graphic 1.
+**b. Find an example that has somethng you don’t like, and explain what you don’t like about it.**
 
-**c. facets:** Exercise 4, Top graphic
+I did not like the comparing kit graphic I made. I didn't like organization of it. The use of selection parameter doesn't allow readers to get an insight of the whole dataset with one glance. Furthermore, the use of bars take up unessensary space, and the x axis labels as flipped sideways.
 
-**d. concatenation or repeat:** Concatenation in Exercise 2, Graphic 1.
+**c. Now create two graphics, one that helps compare the kits and one that helps compare twins.**
 
-**e. non-default settings for a channel’s scale or guide:** Exercise 4, bottom graphic
+```{r}
 
-**f. tooltips:** Exercise 1, Graphic 1
+genetic_wide <- read_csv("https://calvin-data304.netlify.app/data/twins-genetics-wide.csv", show_col_types = FALSE)
+genetic_long <- read_csv("https://calvin-data304.netlify.app/data/twins-genetics-long.csv", show_col_types = FALSE)
 
-**g. another kind of interaction (panning/zooming, brushing, sliders, etc.):** Exercise 4, Top graphic, zooming & Panning.
+# Wrangling
+genetic_dif <- genetic_long |>
+  select(twin, region, kit, `genetic share`)|>
+  pivot_wider(names_from = twin, values_from = `genetic share`)|>
+    mutate(across(ends_with("A"), ~ abs(. - get(sub("A$", "B", cur_column()))), .names = "diff_{.col}"))|>
+  select(region, kit, starts_with("diff_")) 
 
-## **Exercise 6 (Keep learning)**
 
-a.  **Cite 2 or 3 specific examples in the graphics in your portfolio where you used a feature of Vega-Lite/vegabrite/Altair/altair that we *did not* learn in class.**
+genetic_dif_long <- genetic_dif |>
+  pivot_longer(cols = c(ends_with("A")) , names_to = "dif_pair", values_to = "Genetic Share Differences")|>
+  mutate(dif_pair = parse_number(dif_pair))
 
--   Exercise 4: I used vl_mark_img in Exercise 4.
--   Exercise 4: I also learned in concatenation graphics how to turn off axis and grid for one graphic while keep the axis of other graphics on. (vl_config_view() will apply to all concatenated graphics, so doesn't work in my case)
--   Exercise 3, top graphic: I used a rule with y and y2. 
+# print(genetic_dif_long)
 
-b.  **Cite 2 or 3 specific examples where you followed the advice in one of the resources below.**
+# Order arranged by the range of the genetic share differences
+region_order <- list("East Asia","Central Africa","NW Europe","West Africa","SE Europe")
+kit_order <- list("Ancestry", "23andMe", "MyHeritage")
 
--   In Exercise 2.a, I followed the advice in "Color as a tool to highlight" chapter, and use bright/strong colors (black and red) to highlight our business among other competitors (Wilke, 4.3).
+# Omit na
+genetic_dif_long <- na.omit(genetic_dif_long)
+# print(genetic_dif_long)
+```
 
--   In Exercise 1.a, I followed the advice of being aware of the order in "Visualizing Amount" chapter, and sorted the boxplot/point plot in a ascending order. (Wilke, 6.1)
+```{r}
+# The scatter plot
+comp_kit_scatter <- vl_chart(width = 350, height = 300)|>
+  vl_add_properties(title =  list( 
+      text = "Ancestry Genetic Kits detectected least inaccurate differences between identical twins"
+      ),
+      description = "Scatterplot of Genetic Share Differences facetted by Genetic Kit. Ancestry found the least false differences between identical twins, better than 23andMe, which is better than MyHeritage")|>
+  vl_mark_point(size = 15, opacity = 0.6)|>
+  vl_calculate(calculate = "(random() - 0.5) * 0.01", as = "random") |>
+  vl_encode_y("Genetic Share Differences:Q")|>
+  vl_encode_x("kit:N", title = "", sort = kit_order)|>
+  vl_encode_xOffset("random:Q")|>
+  vl_scale_x(paddingInner = 0.6)|>
+  vl_scale_y(type = "symlog", constant = 0.001) |>
+  vl_encode_color("kit:N", legend = FALSE)|>
+  vl_encode_fill("kit:N", legend = FALSE)|>
+  vl_encode_tooltip_array(list("kit","region" ,"Genetic Share Differences"))|>
+  vl_add_data(genetic_dif_long)
+# comp_kit_scatter
 
--   In Exercise 4, I followed the advice of unneccensary visual elements and turned off all the axis and guides for the image graphic, as well as removed the color legend for the top 2 graphics since the box graphic clearly indicates color and the colors are consistent throughout the concatenated graphics (Knaflic, 2020, pg143).
+
+# Box plot 
+comp_kit_box <- vl_chart(width = 350, height = 300)|>
+  vl_add_properties(title =  list( 
+      text = "Ancestry test kit detectected the least inaccurate differences between identical twins while myHeritage test kit the most",
+      subtitle = "Genetic Share Differences are calculated by taking the absolute value of the difference between genetic share of the twins."
+      ),
+      description = "Ancestry found the least false differences between identical twins, better than 23andMe, which is better than MyHeritage")|>
+  vl_mark_boxplot(opacity = 0.5, size = 70, outliers = FALSE)|>
+  vl_encode_y("Genetic Share Differences:Q")|>
+  vl_encode_x("kit:N", title = "",axis = list(labelAngle = 0), sort = kit_order)|>
+  vl_scale_y(type = "symlog", constant = 0.001) |>
+    vl_encode_color("kit:N", legend = FALSE)|>
+  vl_encode_fill("kit:N", legend = FALSE)|>
+  vl_add_data(genetic_dif_long)
+# comp_kit_box
+
+comp_kit_total <- comp_kit_box + comp_kit_scatter
+comp_kit_total
+```
+
+This visualization compares the effectiveness of three genetic kits. Identical twins have identical DNAs, therefore fewer differences suggests better, more accurate genetic testing.
+
+-   The range of the genetic share differences is from 0 to 0.1; Most datapoints lies below 0.01.
+
+-   Ancestry found the least false differences between identical twins, better than 23andMe, which is better than MyHeritage;
+
+```{r,warning=FALSE}
+genetic_dif_twin <- genetic_long |>
+  select(pair,id,region,kit,`genetic share`)|>
+  pivot_wider(names_from = id, values_from = `genetic share`)|>
+  mutate(dif = abs(A-B))
+
+# View the result
+ # print(genetic_dif_twin)
+
+comp_twin <- vl_chart(width = 300, height = 300)|>
+  # vl_add_properties(title =  list( 
+  #     text = "Most test kit accurately detected no difference between identical twins, with some exceptions"
+  #     ))|>
+  vl_mark_point()|>
+  vl_encode_x("A:Q", title = "Genetic Share of Twin A")|>
+  vl_scale_x(type = "symlog", constant = 0.8) |>
+  vl_encode_y("B:Q", title = "Genetic Share of Twin B")|>
+  vl_scale_y(type = "symlog", constant = 0.8) |>
+  vl_encode_color("kit:N")|>
+  vl_encode_fill("kit:N")|>
+  vl_encode_tooltip_array(list("pair","A","B","dif","kit","region"))|>
+  vl_add_data(genetic_dif_twin)
+# comp_twin
+
+ref_line <- data.frame(
+  x = as.double(c(0, 1)),
+  y = as.double(c(0, 1))
+)
+
+# print(ref_line)
+
+# Make a linear line as a reference
+ref_line <- vl_chart(width = 250, height = 250)|>
+  vl_mark_line(opacity = 0.5)|>
+  vl_encode_x("x:Q", title = "")|>
+  vl_encode_y("y:Q", title = "")|>
+  vl_add_data(ref_line)
+  # ref_line
+
+comp_twin_total <- ref_line + comp_twin
+#comp_twin_total
+```
+
+```{r}
+# Making the Pair Difference graph
+pair_order <- list("1","3","6","4","2","5")
+genetic_dif_long$dif_pair <- factor(genetic_dif_long$dif_pair, levels = pair_order)
+
+pair_dif <- vl_chart(width = 150, height = 250)|>
+  vl_mark_point(fill = TRUE)|>
+  vl_encode_x("dif_pair:N",sort = pair_order,axis = list(labelAngle = 0), title = "Pair ID")|>
+  vl_encode_y("Genetic Share Differences:Q")|>
+  vl_scale_y(type = "symlog", constant = 0.01) |>
+  vl_encode_color("kit:N")|>
+  vl_encode_fill("kit:N")|>
+  # vl_encode_tooltip_array(list("pair","A","B","dif","kit","region"))|>
+  vl_add_data(genetic_dif_long)
+
+# Concat
+concat_twin <- vl_hconcat(comp_twin_total,pair_dif)|>
+  vl_add_properties(
+    title = list(
+      text = "Test kits found little differences in Genetic Shares of Identical Twins, with some exception",
+      subtitle = "Genetic Share Differences are calculated by taking the absolute value of the difference between genetic share of the twins."
+    )
+  )
+concat_twin
+```
+
+
+This visualization compares the twins, whether the test kits detects differences between identical twins. 
+
+-   Most genetic share detected by test kits found little or no difference between identical twins, with some expections such as the West Africa genetic share of pair 3 by 23andMe which detected a 0.06 difference, the SE Europe genetic share of pair 1 by MyHeritage which detected a 0.094 difference;
+
+-   The range of the genetic share differences is from 0 to 0.1;
+
+-   test kits detected the most genetic share differences in twin pair 1, followed by twin pair 3,6,4,2, and the least in pair 5.
+
+## Business: Comparing Net Promoter Score (an employee satisfaction measure) among businesses
+
+
+Net Promoter Score (NPS) is a measure of employee satisfaction. This visualization compares NPS of our business with 4 other top competitors over time, and 15 industry competitors' NPS in only February 2020.  
+
+Note: this dataset is a generated fake dataset. 
+
+```{r,feb2020, warning:false}
+feb2020_nps <- read_csv("/rprojects/jc253/DATA304/docs/Feb2020_nps.csv", show_col_types = FALSE)
+# Add a column for categorical
+feb2020_nps <- feb2020_nps|>
+  mutate(category = "feb-2020")|>
+  mutate(isourbus = (business == "OUR BUSINESS"))
+  # pivot_wider(names_from = business, values_from = nps)
+base <-
+vl_chart(width = 300, height = 50)|>
+  vl_calculate("random()", as = "random")|>
+  vl_mark_point()|>
+  vl_encode_y("category:N", title = "")|>
+  vl_encode_yOffset("random")|>
+  vl_encode_x("nps:Q", title = "")|>
+  vl_scale_x(zero = FALSE)|>
+  vl_encode_color("isourbus:N", legend = FALSE)|>
+  vl_encode_fill("isourbus:N", legend = FALSE)|>
+  vl_add_data(feb2020_nps)
+
+rule <-
+  vl_chart(width = 300, height = 50) |>
+  vl_add_data(feb2020_nps)|>
+  vl_filter("datum.isourbus == true")|>
+  vl_mark_rule() |>
+  vl_encode_x("nps:Q", title = "") |>
+  vl_scale_x(domainMin = 18,domainMax = 47)|>
+  vl_encode_color(value = "black")
+
+text <-
+  vl_chart(width = 300, height = 50) |>
+  vl_filter("datum.isourbus == true")|>
+  vl_mark_text(text = "Our Business", size = 10)|>
+  vl_calculate(calculate = "datum.nps + 3.5", as = "text_pos")|>
+  vl_encode_x("text_pos:Q", title = "")|>
+  vl_scale_x(domainMin = 18,domainMax = 47)|>
+  vl_encode_y(value = 8)|>
+  vl_encode_color(value = "black")|>
+  vl_add_data(feb2020_nps)
+
+
+feb_2020 <- vl_layer(base,rule, text)
+
+
+```
+
+```{r,conpetitor_overtime}
+nps_conponents <- read_csv("/rprojects/jc253/DATA304/docs/nps_conponents.csv", show_col_types = FALSE)
+nps_conpetitors <- read_csv("/rprojects/jc253/DATA304/docs/nps_conpetitors.csv", show_col_types = FALSE)
+# join two datasets - nps_conpetitors and nps_conponents(nps column)
+nps_conpetitors <- nps_conpetitors |>
+  inner_join(select(nps_conponents, month, NPS), by = "month")|>
+  rename(`Our Business` = NPS)|>
+  pivot_longer(cols = c("Competitor A", "Competitor B", "Competitor C", "Competitor D", "Our Business"), names_to = "Company", values_to = "NPS")
+
+nps_conpetitors$month <- dmy(paste("01", nps_conpetitors$month))
+
+
+base <-
+vl_chart(width = 300, height = 200, title = "Net Promotor Score")|>
+  vl_mark_line(opacity = 0.7)|>
+  vl_encode_x("month:T", title = "")|>
+  vl_encode_y("NPS:Q", title = "")|>
+  vl_scale_y(zero = FALSE, domainMin = 20, domainMax = 50)|>
+  vl_encode_detail("Company:N")|>
+  vl_encode_color(value = "grey")|>
+  vl_encode_tooltip_array(list("Company", "NPS"))|>
+  vl_add_data(nps_conpetitors)
+
+highlight <- 
+vl_chart(width = 300, height = 200)|>
+  vl_mark_line(size = 3)|>
+  vl_filter("datum.Company == 'Our Business'")|>
+  vl_encode_x("month:T")|>
+  vl_encode_y("NPS:Q", title = "")|>
+  vl_scale_y(zero = FALSE, domainMin = 20, domainMax = 50)|>
+  vl_encode_color(value = "black")|>
+  vl_add_data(nps_conpetitors)
+
+text <-
+  vl_chart(width = 300, height = 200)|>
+  vl_mark_text(text = "Our Busincess")|>
+  vl_encode_x(value = 340)|>
+  vl_encode_y(value = 89)|>
+  vl_add_data(nps_conpetitors)
+
+competition_overtime <- base + highlight + text
+# competition_overtime
+```
+```{r}
+competition_complete <- vl_vconcat(competition_overtime, feb_2020)
+competition_complete
+```
+Our Business shows a consistently lower NPS compared to 3 top competitors, and consistently higher NPS compared to 1 top competitor. In February 2020, our business obtained a higher NPS than all but three other companies.
+
+
+Three components -- promoter, passive, and detractor -- make up net promoter score. They are calculated as % of promoter - % of detractor. Therefore, it would be of interest to explore how there components has changed over time in our business.
+
+```{r, components}
+nps_conponents$month <- dmy(paste("01", nps_conponents$month))
+nps_conponents <- nps_conponents|>
+  select("month","Detractor", "Passive", "Promoter")|>
+  pivot_longer(cols = c("Detractor", "Passive", "Promoter"),
+               values_to = "Score",
+               names_to = "component")|>
+  mutate(Score = parse_number(Score))
+# print(as.tibble(nps_conponents))  
+
+# 
+stacked_bar <-
+vl_chart(title = "Percentage of Survey Response")|>
+  vl_mark_bar(size = 10)|>
+  vl_encode_y("Score:Q", stack = TRUE, title = "")|>
+  vl_encode_x("month:T")|>
+  vl_encode_color("component:N")|>
+  vl_scale_color(domain = c("Promoter", "Passive", "Detractor"),
+                  range = c("green", "grey", "red"))|>
+  vl_add_data(nps_conponents)
+
+
+# vl_chart()|>
+#   vl_mark_point(size = 10)|>
+#   vl_encode_y("Score:Q", title = "Score (% of survey response)")|>
+#   vl_encode_x("month:T")|>
+#   vl_encode_color("component:N")|>
+#   vl_scale_color(domain = c("Promoter", "Passive", "Detractor"),
+#                   range = c("green", "grey", "red"))|>
+#   vl_add_data(nps_conponents)
+```
+
+```{r}
+nps_conponents <- read_csv("/rprojects/jc253/DATA304/docs/nps_conponents.csv")
+nps_conponents$month <- dmy(paste("01", nps_conponents$month))
+
+nps_conponents <- nps_conponents|>
+   mutate(
+     Detractor = round(parse_number(Detractor) / 100 * `# of ratings`),
+     Passive = round(parse_number(Passive) / 100 * `# of ratings`),
+     Promoter = round(parse_number(Promoter) / 100 * `# of ratings`))|>
+  select("month","Detractor", "Passive", "Promoter")|>
+  pivot_longer(cols = c("Detractor", "Passive", "Promoter"),
+               values_to = "Score",
+               names_to = "component")
+
+component_point <-
+vl_chart(title = "Number of Survey Responses")|>
+  vl_mark_line(point = TRUE)|>
+  vl_encode_y("Score:Q", title = "")|>
+  vl_encode_x("month:T")|>
+  vl_encode_color("component:N")|>
+  vl_scale_color(domain = c("Promoter", "Passive", "Detractor"),
+                  range = c("green", "grey", "red"))|>
+  vl_add_data(nps_conponents)
+```
+
+```{r}
+concat_nps <- vl_hconcat(component_point, stacked_bar)
+concat_nps
+```
+
+According to the graphics, % of Passive response decreases, while % of detractor and promoter increases overtime. In addition, the counts of detractor increase steadily overtime, while number of passive response slightly increases in April and May of 2019 which contradict the overall trend, and the number of promoter responses has some fluctuation between May and October of 2019.
+
+## Social Science: Visualizing Contraception Use and Fertility Rate in Tanzania
+
+Data from the [Demographic and Health Survey Program](https://dhsprogram.com/)
+
+```{r}
+tanzania_contraception <- read.csv("/rprojects/jc253/DATA304/docs/tanzania_contraception.csv")
+    
+tanzania_contraception<-tanzania_contraception|>
+  mutate(`No Reproductive Intention` = Current.Use.of.Contraception.Rate + Unmet.Need.for.Family.Planning)|>
+   rename(
+        `Fertility Rate` = Fertility.Rate, 
+        `Current Contraception User` = Current.Use.of.Contraception.Rate,
+        `Unmet Need for Family Planning` = Unmet.Need.for.Family.Planning,
+        Survey_Date = Survey.Year)
+    
+# Convert to long
+    tanzania_contraception_long <- tanzania_contraception |>
+      mutate(Survey_Date = as.Date(Survey_Date, format = "%m/%d/%Y"))|>
+      select(Survey_Date, `Current Contraception User`,`No Reproductive Intention`, `Unmet Need for Family Planning`, `Fertility Rate`)|>
+      pivot_longer(cols = c("No Reproductive Intention","Current Contraception User", "Unmet Need for Family Planning", "Fertility Rate"), names_to = "type", values_to = "values")
+    
+    
+    # tanzania_fertility <- tanzania_contraception|>
+    #   mutate(Survey_Date = as.Date(Survey.Year, format = "%m/%d/%Y"))|>
+    #   rename(`Fertility Rate` = Fertility.Rate)|>
+    #   select(Survey_Date, `Fertility Rate`)
+```
+
+
+```{r}
+unmet_need <-
+vl_chart(width = 400, height = 250)|>
+  # vl_filter("datum.type == 'No Reproductive Intention'")|>
+  vl_mark_area(opacity = 0.3)|>
+  vl_encode_x("Survey_Date:T")|>
+  vl_encode_y("No Reproductive Intention:Q",title = "" )|>
+  vl_encode_y2("Current Contraception User:Q", title = "")|>
+  vl_scale_y(domain = c(5,61))|>
+  vl_scale_y(zero = FALSE)|>
+  # vl_encode_color("type:N")|>
+  # vl_encode_tooltip_array(list('Survey_Date:T','type','values'))|>
+
+  vl_add_data(tanzania_contraception)
+# unmet_need
+
+unmet_need_rule <-
+  vl_chart(width = 400, height = 250)|>
+  vl_mark_rule()|>
+  vl_encode_x("Survey_Date:T")|>
+  vl_encode_y("No Reproductive Intention:Q",title = "" )|>
+  vl_encode_y2("Current Contraception User:Q", title = "")|>
+  vl_scale_y(domain = c(5,61))|>
+  vl_scale_y(zero = FALSE)|>
+  vl_encode_tooltip_array(list("Unmet Need for Family Planning"))|>
+  vl_add_data(tanzania_contraception)
+
+# unmet_need_rule
+
+point <-
+vl_chart(width = 400, height = 230)|>
+  vl_filter("datum.type != 'Unmet Need for Family Planning'")|>
+  vl_filter("datum.type != 'Fertility Rate'")|>
+  vl_mark_line(point = TRUE)|>
+  vl_encode_x("Survey_Date:T", title = "")|>
+  vl_encode_y("values:Q", title = "") |> 
+  vl_scale_y(zero = FALSE)|>
+  vl_encode_color("type:N", title = "")|>
+  vl_encode_tooltip_array(list('Survey_Date:T','type','values'))|>
+    vl_add_properties(
+    title = list(
+      text = "Contraception Use and Reproductive Intention (% of All Women)",
+      subtitle = "Black vertical line = Unmet Need for Family Planning"
+    )
+  )|>
+  vl_add_data(tanzania_contraception_long)
+# point
+total <- unmet_need + point + unmet_need_rule
+  # total
+```
+
+```{r}
+fertility <-
+vl_chart(width = 400, height = 70, title = "Fertility Rate of women aged 15-49 (%)")|>
+  vl_filter("datum.type == 'Fertility Rate'")|>
+  vl_mark_line(point = TRUE)|>
+  vl_encode_x("Survey_Date:T", title = "")|>
+  vl_encode_y("values:Q", title = "")|>
+  vl_scale_y(zero = FALSE)|>
+  vl_encode_color("type:N")|>
+  vl_encode_tooltip_array(list('Survey_Date:T','type', "values"))|>
+  vl_add_data(tanzania_contraception_long)
+```
+
+```{r}
+concat_tanzania <- vl_vconcat(total, fertility)
+concat_tanzania
+```
+
+-   According to DHS survey data collected from 1992 to 2016, unmet need for family planning among all women in Tanzania, the percentage of women who do not want to become pregnant but are not using contraception, slightly decreases from 27.8% in 1992 to 22.1% in 2016, except from 2000 to 2006 which the unmet need for family planning increases by 19.6.
+
+-   The use of contraception among all women in Tanzania sharply increases from 5.9% to 38.4%.
+
+-   Fertility Rate among women aged 15-49 overall decreased by 1% from 1992 to 2016, the decrease is steady except from 2000 to 2006 where the fertility rate increased by 0.1%.
+
+
+## **Dataset Used:**
+
+
+-   [genetic_wide](https://calvin-data304.netlify.app/data/twins-genetics-wide.csv)
+
+-   [genetic_long](https://calvin-data304.netlify.app/data/twins-genetics-long.csv)
+
+-   [feb2020_nps](Feb2020_nps.csv)
+
+-   [nps_conponents](nps_conponents.csv)
+
+-   [nps_conpetitors](nps_conpetitors.csv)
+
+-   [tanzania_contraception](tanzania_contraception.csv)
+
+-   eeg_data unavailable for download for privacy. 
